@@ -1,3 +1,14 @@
 svg {
   width: 22px;
 }
+
+ul {
+  list-style: none;
+  padding: 09
+}
+
+.wrapper {
+  max-width: 64rem;
+  margin: auto;
+  padding: 0 1.2rem;
+}

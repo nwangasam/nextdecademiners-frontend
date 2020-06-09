@@ -39,11 +39,13 @@ const Login = (props) => {
         pos='relative'
         w='80%'
         mx='auto'
-        bottom='2rem'
+        bottom='1rem'
         p={'8px'}
         bg='white'
       >
-        <Image src={Logo} alt='Global finance logo' mx='auto' width='75%' />
+        <RouterLink to='/'>
+        <Image src={Logo} alt='Nextdecademiners logo' mx='auto' width='75%' />
+        </RouterLink>
       </Box>
       <Heading mb={8} fontSize={{ base: '27px', lg: '30px' }} textAlign='center' fontWeight='400'>
         Welcome back! Login.
@@ -76,7 +78,7 @@ const Login = (props) => {
       </form>
       <Text mt={4} fontSize='1.09rem' textAlign='center'>
         Are you new here?{' '}
-        <Link color='blue.500' as={RouterLink} to='/signup'>
+        <Link color='blue.500' as={RouterLink} to='/auth/signup'>
           Create an account
           <Icon name='external-link' mx='2px' verticalAlign='middle' />
         </Link>

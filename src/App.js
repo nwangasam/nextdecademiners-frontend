@@ -1,23 +1,23 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Heading, Text, Flex, Grid, useDisclosure } from '@chakra-ui/core';
+import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { Heading, Text, Flex, Grid, useDisclosure } from "@chakra-ui/core";
 
-import './App.css';
+import "./App.css";
 
-import Layout from './components/Layout/Layout';
-import Toolbar from './components/Toolbar/Toolbar';
-import MainNavigation from './components/Navigation/MainNavigation/MainNavigation';
-import Sidebar from './components/Sidebar/Sidebar';
-import Crypto from './components/Crypto/Crypto';
-import Chart from './components/Chart/Chart';
-import Deposit from './components/Deposit/Deposit';
-import Withdraw from './components/Withdraw/Withdraw';
-import Invest from './components/Investment/Investment';
+import Layout from "./components/Layout/Layout";
+import Toolbar from "./components/Toolbar/Toolbar";
+import MainNavigation from "./components/Navigation/MainNavigation/MainNavigation";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Crypto from "./components/Crypto/Crypto";
+import Chart from "./components/Chart/Chart";
+import Deposit from "./components/Deposit/Deposit";
+import Withdraw from "./components/Withdraw/Withdraw";
+import Invest from "./components/Investment/Investment";
 
-import Signup from './pages/auth/Signup';
-import Login from './pages/auth/Login';
+import Signup from "./pages/auth/Signup";
+import Login from "./pages/auth/Login";
 
-import LandingPage from './pages/user/landing';
+import LandingPage from "./pages/user/landing";
 
 // const App = (props) => {
 //   const { isOpen, onClose, onToggle } = useDisclosure();
@@ -65,15 +65,15 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const token = localStorage.getItem('token');
-    const expiryDate = localStorage.getItem('expiryDate');
+    const token = localStorage.getItem("token");
+    const expiryDate = localStorage.getItem("expiryDate");
     if (!token || !expiryDate) return;
 
     if (new Date(expiryDate) <= new Date()) {
       return this.logoutHandler();
     }
 
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem("userId");
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();
     this.setState({ isAuth: true, token: token, userId: userId });
@@ -82,9 +82,9 @@ class App extends React.Component {
 
   logoutHandler = () => {
     this.setState({ isAuth: false, token: null });
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiryDate');
-    localStorage.removeItem('userId');
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiryDate");
+    localStorage.removeItem("userId");
   };
 
   setAutologout = (milliseconds) => {
@@ -97,10 +97,10 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: authData.email,
@@ -108,10 +108,10 @@ class App extends React.Component {
         }),
       });
       if (response.status === 422) {
-        throw new Error('Validation failed');
+        throw new Error("Validation failed");
       }
       if (response.status !== 200 && response.status !== 201) {
-        throw new Error('Could not authenticated you!');
+        throw new Error("Could not authenticated you!");
       }
       const { token, userId } = await response.json();
       this.setState({
@@ -120,11 +120,11 @@ class App extends React.Component {
         isAuth: true,
         authLoading: false,
       });
-      localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId);
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
       const remainingMilliseconds = 60 * 60 * 1000 * 24;
       const expiryDate = new Date(new Date.getTime() + remainingMilliseconds);
-      localStorage.setItem('expiryDate', expiryDate.toISOString());
+      localStorage.setItem("expiryDate", expiryDate.toISOString());
       this.setAutologout(remainingMilliseconds);
     } catch (err) {
       this.setState({
@@ -139,15 +139,15 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     try {
-      const res = await fetch('http://localhost:8080/auth/signup', {
-        method: 'PUT',
+      const res = await fetch("http://localhost:8080/auth/signup", {
+        method: "PUT",
         headers: {
-          'Content-Typ': 'application/json',
+          "Content-Typ": "application/json",
         },
         body: JSON.stringify({
-          name: authData.name,
-          email: authData.email,
-          password: authData.password,
+          name: authData.name.value,
+          email: authData.email.value,
+          password: authData.password.value,
         }),
       });
       if (res.status === 422) {
@@ -156,11 +156,11 @@ class App extends React.Component {
         );
       }
       if (res.status !== 200 && res.status !== 201) {
-        throw new Error('Creating a user failed');
+        throw new Error("Creating a user failed");
       }
       const result = await res.json();
       this.setState({ isAuth: false, authLoading: false });
-      this.props.history.replace('/');
+      this.props.history.replace("/");
     } catch (err) {
       this.setState({
         isAuth: false,
@@ -173,15 +173,46 @@ class App extends React.Component {
   render() {
     let routes = (
       <Switch>
-        <Route path='/' exact render={(props) => <LandingPage {...props} />} />
+        <Route path="/" exact render={(props) => <LandingPage {...props} />} />
+        <Route
+          path="/auth/signup"
+          render={(props) => (
+            <Signup
+              {...props}
+              onSignup={this.signupHandler}
+              loading={this.state.authLoading}
+            />
+          )}
+        />
+        <Route
+          path="/auth/login"
+          render={(props) => (
+            <Login
+              {...props}
+              onLogin={this.loginHandler}
+              loading={this.state.authLoading}
+            />
+          )}
+        />
+        <Redirect to="/" />
       </Switch>
     );
 
-    return (
-      <div>
-        {routes}
-      </div>
-    );
+    if (this.state.isAuth) {
+      routes = (
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={(props) => {
+              console.log(`You're now authenticated!`);
+            }}
+          />
+        </Switch>
+      );
+    }
+
+    return <div>{routes}</div>;
   }
 }
 
