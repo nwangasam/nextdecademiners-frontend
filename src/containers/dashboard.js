@@ -37,9 +37,9 @@ const Dashboard = (props) => {
   };
 
   const urls = [
-    'http://localhost:8080/user/profile',
-    'http://localhost:8080/user/deposits',
-    'http://localhost:8080/user/withdrawals',
+    'https://nextdecademiners.herokuapp.com/user/profile',
+    'https://nextdecademiners.herokuapp.com/user/deposits',
+    'https://nextdecademiners.herokuapp.com/user/withdrawals',
   ]
 
   const requestOption = {

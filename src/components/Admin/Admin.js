@@ -63,9 +63,9 @@ const Admin = (props) => {
   };
 
   const urls = [
-    "http://localhost:8080/admin/users",
-    "http://localhost:8080/admin/deposits",
-    "http://localhost:8080/admin/withdrawals",
+    "https://nextdecademiners.herokuapp.com/admin/users",
+    "https://nextdecademiners.herokuapp.com/admin/deposits",
+    "https://nextdecademiners.herokuapp.com/admin/withdrawals",
   ];
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const Admin = (props) => {
 
   function confirmDepositHandler(e, depositData) {
     if (!depositData._id) return;
-    fetch(`http://localhost:8080/admin/deposit`, {
+    fetch(`https://nextdecademiners.herokuapp.com/admin/deposit`, {
       method: "POST",
       headers: requestOption.headers,
       body: JSON.stringify(depositData),
@@ -106,7 +106,7 @@ const Admin = (props) => {
 
   function confirmWithdrawalHandler(e, withdrawal) {
     if (!withdrawal._id) return;
-    fetch(`http://localhost:8080/admin/withdraw`, {
+    fetch(`https://nextdecademiners.herokuapp.com/admin/withdraw`, {
       method: "POST",
       headers: requestOption.headers,
       body: JSON.stringify(withdrawal),

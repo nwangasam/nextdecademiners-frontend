@@ -76,7 +76,7 @@ const Deposit = (props) => {
   const handleDeposit = () => {
     onClose();
     if (!props.user._id) return;
-    fetch("http://localhost:8080/user/deposit", {
+    fetch("https://nextdecademiners.herokuapp.com/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

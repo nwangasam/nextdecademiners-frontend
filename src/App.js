@@ -51,7 +51,7 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("https://nextdecademiners.herokuapp.com/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     try {
-      const res = await fetch("http://localhost:8080/auth/signup", {
+      const res = await fetch("https://nextdecademiners.herokuapp.com/auth/signup", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

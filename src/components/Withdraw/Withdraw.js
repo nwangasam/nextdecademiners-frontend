@@ -65,7 +65,7 @@ const Withdraw = (props) => {
 
   const handleWithdrawal = () => {
     onClose();
-    fetch("http://localhost:8080/user/withdraw", {
+    fetch("https://nextdecademiners.herokuapp.com/user/withdraw", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
