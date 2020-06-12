@@ -24,9 +24,9 @@ import Plan from "../../components/Investment/plan";
 
 const LandingPage = () => {
   const crypto = [
-    { id: "bitcoin", label: "Bitcoin", price: "8,500" },
-    { id: "ethereum", label: "Ethereum", price: "389" },
-    { id: "bitcoin-cash", label: "Bitcoin Cash", price: "8,500" },
+    { id: "bitcoin", label: "Bitcoin", price: "9,451.71" },
+    { id: "ethereum", label: "Ethereum", price: "237.19" },
+    { id: "bitcoin-cash", label: "Bitcoin Cash", price: "240.20" },
   ];
 
   const renderCrypto = crypto.map((c, i) => (

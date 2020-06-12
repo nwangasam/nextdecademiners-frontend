@@ -221,6 +221,7 @@ class App extends React.Component {
             </Suspense>
           )}
         />
+        <Redirect to='/' />
       </Switch>
     );
 
