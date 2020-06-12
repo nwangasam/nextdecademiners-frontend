@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { Heading } from '@chakra-ui/core';
+import Dashboard from "./containers/dashboard";
+import { Heading, Grid, Spinner } from "@chakra-ui/core";
 
 import "./App.css";
 
@@ -8,8 +9,6 @@ const Signup = lazy(() => import("./pages/auth/Signup"));
 const Login = lazy(() => import("./pages/auth/Login"));
 
 const LandingPage = lazy(() => import("./pages/user/landing"));
-const Dashboard = lazy(() => import("./containers/dashboard"));
-
 
 class App extends React.Component {
   state = {
@@ -153,7 +152,19 @@ class App extends React.Component {
           path="/"
           exact
           render={(props) => (
-            <Suspense fallback={<Heading textAlign='center'>Next decademiners...</Heading>}>
+            <Suspense
+              fallback={
+                <Grid p='absolute' h='100vh' style={{ placeItems: 'center' }}>
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                </Grid>
+              }
+            >
               <LandingPage {...props} />
             </Suspense>
           )}
@@ -161,7 +172,9 @@ class App extends React.Component {
         <Route
           path="/auth/signup"
           render={(props) => (
-            <Suspense fallback={<Heading textAlign='center'>Loading Signup...</Heading>}>
+            <Suspense
+              fallback={<Heading textAlign="center">Loading Signup...</Heading>}
+            >
               <Signup
                 {...props}
                 onSignup={this.signupHandler}
@@ -175,7 +188,9 @@ class App extends React.Component {
         <Route
           path="/auth/login"
           render={(props) => (
-            <Suspense fallback={<Heading textAlign='center'>Loading login...</Heading>}>
+            <Suspense
+              fallback={<Heading textAlign="center">Loading login...</Heading>}
+            >
               <Login
                 {...props}
                 onLogin={this.loginHandler}
@@ -192,20 +207,17 @@ class App extends React.Component {
     if (this.state.isAuth) {
       routes = (
         <Switch>
-          <Redirect from="/auth/login" to="/" />
-          <Redirect from="/auth/signup" to="/" />
+          <Redirect from="/auth/login" to="/dashboard" />
+          <Redirect from="/auth/signup" to="/dashboard" />
           <Route
-            path="/"
-            exact
+            path="/dashboard"
             render={(props) => (
-              <Suspense fallback={<Heading textAlign='center'>Loading Dashboard ...</Heading>}>
-                <Dashboard
-                  {...props}
-                  userId={this.state.userId}
-                  token={this.state.token}
-                  logoutHandler={this.logoutHandler}
-                />
-              </Suspense>
+              <Dashboard
+                {...props}
+                userId={this.state.userId}
+                token={this.state.token}
+                logoutHandler={this.logoutHandler}
+              />
             )}
           />
         </Switch>

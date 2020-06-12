@@ -65,10 +65,10 @@ const Chart = () => {
             width='100%'
             height='536px'
             scrolling='auto'
-            marginwidth='0'
-            marginheight='0'
-            frameborder='0'
-            borderRadius='8px'
+            marginWidth='0'
+            marginHeight='0'
+            frameBorder='0'
+            borderradius='8px'
             border='0'
             style={{ border: 0, margin: 0, padding: 0, lineHeight: '14px' }}
           ></iframe>

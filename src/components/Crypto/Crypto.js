@@ -86,7 +86,7 @@ const Crypto = ({ user, deposits, withdrawals, totalBalance: totalBal }) => {
         <TabList mb="1em">
           {stats.map((stat, i) => {
             return (
-              <Tab key={stat.id} outline="none">
+              <Tab key={i} outline="none">
                 {stat.text}
               </Tab>
             );

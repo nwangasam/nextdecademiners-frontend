@@ -1,26 +1,31 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import React, { lazy, Suspense, useState, useEffect } from "react";
+import axios from "axios";
 
 import { Grid, useDisclosure } from "@chakra-ui/core";
 import { Route, Switch } from "react-router-dom";
-
-import Layout from "../components/Layout/Layout";
-import Toolbar from "../components/Toolbar/Toolbar";
-import MainNavigation from "../components/Navigation/MainNavigation/MainNavigation";
+import { Skeleton, Heading } from "@chakra-ui/core";
 import Sidebar from "../components/Sidebar/Sidebar";
-import Crypto from "../components/Crypto/Crypto";
-import Chart from "../components/Chart/Chart";
-import Deposit from "../components/Deposit/Deposit";
-import Withdraw from "../components/Withdraw/Withdraw";
-import Invest from "../components/Investment/Investment";
-import Account from "../components/Account/Account";
-import Admin from "../components/Admin/Admin";
+import Layout from "../components/Layout/Layout";
+
+const Toolbar = lazy(() => import("../components/Toolbar/Toolbar"));
+const MainNavigation = lazy(() =>
+  import("../components/Navigation/MainNavigation/MainNavigation")
+);
+const Crypto = lazy(() => import("../components/Crypto/Crypto"));
+const Chart = lazy(() => import("../components/Chart/Chart"));
+const Deposit = lazy(() => import("../components/Deposit/Deposit"));
+const Withdraw = lazy(() => import("../components/Withdraw/Withdraw"));
+const Invest = lazy(() => import("../components/Investment/Investment"));
+const Account = lazy(() => import("../components/Account/Account"));
+const Admin = lazy(() => import("../components/Admin/Admin"));
 
 const Dashboard = (props) => {
   const { isOpen, onClose, onToggle } = useDisclosure();
   const [user, setUser] = useState(null);
   const [userDeposits, setUserDeposits] = useState(null);
   const [userWithdrawals, setUserWithdrawals] = useState(null);
+
+  const url = props.match.url;
 
   const renderTotatBalance = (currency) => {
     if (!user) return;
@@ -29,7 +34,7 @@ const Dashboard = (props) => {
     for (const cur in userBal) {
       total += userBal[cur];
     }
-    if (currency && typeof(currency) === 'number') total = currency;
+    if (currency && typeof currency === "number") total = currency;
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
@@ -37,46 +42,57 @@ const Dashboard = (props) => {
   };
 
   const urls = [
-    'https://nextdecademiners.herokuapp.com/user/profile',
-    'https://nextdecademiners.herokuapp.com/user/deposits',
-    'https://nextdecademiners.herokuapp.com/user/withdrawals',
-  ]
+    "https://nextdecademiners.herokuapp.com/user/profile",
+    "https://nextdecademiners.herokuapp.com/user/deposits",
+    "https://nextdecademiners.herokuapp.com/user/withdrawals",
+  ];
 
   const requestOption = {
     method: "GET",
     headers: {
       Authorization: `Bearer ${props.token}`,
     },
-  }
-  
+  };
+
   useEffect(() => {
     const fetchUserData = async (requestOption, urls) => {
-      const requests = urls.map((url) => axios(url, requestOption))
+      const requests = urls.map((url) => axios(url, requestOption));
       try {
         const response = await Promise.all(requests);
         const [user, deposits, withdrawals] = response;
-         setUser(user.data.user);
-         setUserDeposits(deposits.data.deposits);
-         setUserWithdrawals(withdrawals.data.withdrawals);
-         console.log(user);
+        setUser(user.data.user);
+        setUserDeposits(deposits.data.deposits);
+        setUserWithdrawals(withdrawals.data.withdrawals);
+        console.log(user);
       } catch (err) {
         console.log(err);
       }
     };
     fetchUserData(requestOption, urls);
-  }, [requestOption, urls]);
+  }, []);
 
   return (
     <Layout
       header={
-        <Toolbar>
-          <MainNavigation
-            toggleSidebar={onToggle}
-            isOpen={isOpen}
-            user={user}
-            totalBalance={renderTotatBalance}
-          />
-        </Toolbar>
+        <Suspense fallback={<Skeleton height="55px" />}>
+          <Toolbar>
+            <MainNavigation
+              toggleSidebar={onToggle}
+              isOpen={isOpen}
+              user={user}
+              totalBalance={renderTotatBalance}
+            />
+          </Toolbar>
+        </Suspense>
+      }
+      sidebar={
+        <Sidebar
+          {...props}
+          closeSidebar={onClose}
+          isOpen={isOpen}
+          user={user}
+          totalBalance={renderTotatBalance}
+        />
       }
     >
       <Grid
@@ -84,42 +100,31 @@ const Dashboard = (props) => {
         templateColumns={{ base: "1fr", lg: "240px repeat(2, 1fr)" }}
         bg="orange"
       >
-        <Route
-          path="/"
-          render={(props) => (
-            <Sidebar
-              {...props}
-              closeSidebar={onClose}
-              isOpen={isOpen}
-              user={user}
-              totalBalance={renderTotatBalance}
-            />
-          )}
-        />
         <Switch>
           <Route
-            path="/"
-            exact
+            path={`/`}
             render={(properties) => (
-              <Crypto
-                {...properties}
-                user={user}
-                totalBalance={renderTotatBalance}
-                deposits={user && userDeposits}
-                withdrawals={user && userWithdrawals}
+              <Suspense fallback={<Heading>Crypto Loading...</Heading>}>
+                <Crypto
+                  {...properties}
+                  user={user}
+                  totalBalance={renderTotatBalance}
+                  deposits={user && userDeposits}
+                  withdrawals={user && userWithdrawals}
                 />
+              </Suspense>
             )}
           />
           <Route
-            path="/deposit"
+            path={`/${url}/desposit`}
             exact
             render={(properties) => (
               <Deposit {...properties} user={user} token={props.token} />
             )}
           />
-          <Route path="/invest" exact component={Invest} />
+          <Route path={`/${url}/invest`} exact component={Invest} />
           <Route
-            path="/withdraw"
+            path={`/${url}/withdraw`}
             exact
             render={(properties) => (
               <Withdraw
@@ -131,14 +136,14 @@ const Dashboard = (props) => {
             )}
           />
           <Route
-            path="/admin"
+            path={`/${url}/admin`}
             exact
             render={(properties) => (
               <Admin {...properties} user={user} token={props.token} />
             )}
           />
           <Route
-            path="/account"
+            path={`/${url}/account`}
             exact
             render={(properties) => (
               <Account
@@ -150,7 +155,9 @@ const Dashboard = (props) => {
             )}
           />
         </Switch>
-        <Chart />
+        <Suspense fallback={<Heading>Chart Loading...</Heading>}>
+          <Chart />
+        </Suspense>
       </Grid>
     </Layout>
   );
