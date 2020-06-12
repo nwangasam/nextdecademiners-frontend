@@ -1,13 +1,15 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import { Heading } from '@chakra-ui/core';
 
 import "./App.css";
 
-import Signup from "./pages/auth/Signup";
-import Login from "./pages/auth/Login";
+const Signup = lazy(() => import("./pages/auth/Signup"));
+const Login = lazy(() => import("./pages/auth/Login"));
 
-import LandingPage from "./pages/user/landing";
-import Dashboard from "./containers/dashboard";
+const LandingPage = lazy(() => import("./pages/user/landing"));
+const Dashboard = lazy(() => import("./containers/dashboard"));
+
 
 class App extends React.Component {
   state = {
@@ -38,7 +40,7 @@ class App extends React.Component {
     localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
     localStorage.removeItem("userId");
-    console.log('You just logged out')
+    console.log("You just logged out");
   };
 
   setAutologout = (milliseconds) => {
@@ -51,16 +53,19 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     try {
-      const response = await fetch("https://nextdecademiners.herokuapp.com/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: authData.email,
-          password: authData.password,
-        }),
-      });
+      const response = await fetch(
+        "https://nextdecademiners.herokuapp.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: authData.email,
+            password: authData.password,
+          }),
+        }
+      );
       if (response.status === 422) {
         const result = await response.json();
         this.setState({ error: result.message, authLoading: false });
@@ -98,27 +103,30 @@ class App extends React.Component {
     event.preventDefault();
     this.setState({ authLoading: true });
     try {
-      const res = await fetch("https://nextdecademiners.herokuapp.com/auth/signup", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: authData.name.value,
-          email: authData.email.value,
-          password: authData.password.value,
-          confirmPassword: authData.confirmPassword.value,
-        }),
-      });
+      const res = await fetch(
+        "https://nextdecademiners.herokuapp.com/auth/signup",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: authData.name.value,
+            email: authData.email.value,
+            password: authData.password.value,
+            confirmPassword: authData.confirmPassword.value,
+          }),
+        }
+      );
       if (res.status === 422) {
         const result = await res.json();
         this.setState({ error: result.data[0], authLoading: false });
-        console.log(result.data[0])
+        console.log(result.data[0]);
         return;
       }
       if (res.status !== 200 && res.status !== 201) {
         const result = await res.json();
-        console.log(result.data[0])
+        console.log(result.data[0]);
         this.setState({ error: result.data[0], authLoading: false });
         return;
       }
@@ -141,32 +149,43 @@ class App extends React.Component {
   render() {
     let routes = (
       <Switch>
-        <Route path="/" exact render={(props) => <LandingPage {...props} />} />
+        <Route
+          path="/"
+          exact
+          render={(props) => (
+            <Suspense fallback={<Heading textAlign='center'>Next decademiners...</Heading>}>
+              <LandingPage {...props} />
+            </Suspense>
+          )}
+        />
         <Route
           path="/auth/signup"
           render={(props) => (
-            <Signup
-              {...props}
-              onSignup={this.signupHandler}
-              loading={this.state.authLoading}
-              error={this.state.error}
-              handleError={this.handleError}
-            />
+            <Suspense fallback={<Heading textAlign='center'>Loading Signup...</Heading>}>
+              <Signup
+                {...props}
+                onSignup={this.signupHandler}
+                loading={this.state.authLoading}
+                error={this.state.error}
+                handleError={this.handleError}
+              />
+            </Suspense>
           )}
         />
         <Route
           path="/auth/login"
           render={(props) => (
-            <Login
-              {...props}
-              onLogin={this.loginHandler}
-              loading={this.state.authLoading}
-              error={this.state.error}
-              handleError={this.handleError}
-            />
+            <Suspense fallback={<Heading textAlign='center'>Loading login...</Heading>}>
+              <Login
+                {...props}
+                onLogin={this.loginHandler}
+                loading={this.state.authLoading}
+                error={this.state.error}
+                handleError={this.handleError}
+              />
+            </Suspense>
           )}
         />
-        <Redirect to="/" />
       </Switch>
     );
 
@@ -177,13 +196,16 @@ class App extends React.Component {
           <Redirect from="/auth/signup" to="/" />
           <Route
             path="/"
+            exact
             render={(props) => (
+              <Suspense fallback={<Heading textAlign='center'>Loading Dashboard ...</Heading>}>
                 <Dashboard
                   {...props}
                   userId={this.state.userId}
                   token={this.state.token}
                   logoutHandler={this.logoutHandler}
                 />
+              </Suspense>
             )}
           />
         </Switch>
