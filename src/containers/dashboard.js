@@ -73,101 +73,105 @@ const Dashboard = (props) => {
   }, []);
 
   return (
-    <Suspense fallback={
-      <>
-        <Skeleton h={'12vh'} rounded='full' m={4} />
-        <Skeleton h={'8vh'} rounded='full' m={4} />
-        <Skeleton h={'70vh'} rounded='full' m={4} />
-      </>
-    }>
-      <Route>
-        <Layout
-          header={
-            <Toolbar>
-              <MainNavigation
-                toggleSidebar={onToggle}
-                isOpen={isOpen}
-                user={user}
-                totalBalance={renderTotatBalance}
+    <Layout
+      header={
+        <Toolbar>
+          <MainNavigation
+            toggleSidebar={onToggle}
+            isOpen={isOpen}
+            user={user}
+            totalBalance={renderTotatBalance}
+          />
+        </Toolbar>
+      }
+    >
+      <Grid
+        gap={4}
+        templateColumns={{ base: "1fr", lg: "240px repeat(2, 1fr)" }}
+        bg="orange"
+      >
+        <Route
+          path="/"
+          render={(properties) => (
+            <Sidebar
+              {...properties}
+              closeSidebar={onClose}
+              isOpen={isOpen}
+              user={user}
+              totalBalance={renderTotatBalance}
+            />
+          )}
+        />
+        <Suspense
+          fallback={
+            <Grid pos="0" h="100vh" style={{ placeItems: "center" }}>
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
               />
-            </Toolbar>
+            </Grid>
           }
         >
-          <Grid
-            gap={4}
-            templateColumns={{ base: "1fr", lg: "240px repeat(2, 1fr)" }}
-            bg="orange"
-          >
+          <Switch>
             <Route
               path="/"
+              exact
               render={(properties) => (
-                <Sidebar
+                <Crypto
                   {...properties}
-                  closeSidebar={onClose}
-                  isOpen={isOpen}
                   user={user}
+                  totalBalance={renderTotatBalance}
+                  deposits={user && userDeposits}
+                  withdrawals={user && userWithdrawals}
+                />
+              )}
+            />
+
+            <Route
+              path="/deposit"
+              render={(properties) => (
+                <Deposit {...properties} user={user} token={props.token} />
+              )}
+            />
+
+            <Route path="/invest" component={Invest} />
+
+            <Route
+              path="/withdraw"
+              render={(properties) => (
+                <Withdraw
+                  {...properties}
+                  user={user}
+                  token={props.token}
                   totalBalance={renderTotatBalance}
                 />
               )}
             />
-            <Switch>
-              <Route
-                path="/"
-                exact
-                render={(properties) => (
-                  <Crypto
-                    {...properties}
-                    user={user}
-                    totalBalance={renderTotatBalance}
-                    deposits={user && userDeposits}
-                    withdrawals={user && userWithdrawals}
-                  />
-                )}
-              />
-
-              <Route
-                path="/deposit"
-                render={(properties) => (
-                  <Deposit {...properties} user={user} token={props.token} />
-                )}
-              />
-
-              <Route path="/invest" component={Invest} />
-
-              <Route
-                path="/withdraw"
-                render={(properties) => (
-                  <Withdraw
-                    {...properties}
-                    user={user}
-                    token={props.token}
-                    totalBalance={renderTotatBalance}
-                  />
-                )}
-              />
-              <Route
-                path="/admin"
-                render={(properties) => (
-                  <Admin {...properties} user={user} token={props.token} />
-                )}
-              />
-              <Route
-                path="/account"
-                render={(properties) => (
-                  <Account
-                    {...properties}
-                    user={user}
-                    totalBalance={renderTotatBalance}
-                    logoutHandler={props.logoutHandler}
-                  />
-                )}
-              />
-            </Switch>
-            <Chart />
-          </Grid>
-        </Layout>
-      </Route>
-    </Suspense>
+            <Route
+              path="/admin"
+              render={(properties) => (
+                <Admin {...properties} user={user} token={props.token} />
+              )}
+            />
+            <Route
+              path="/account"
+              render={(properties) => (
+                <Account
+                  {...properties}
+                  user={user}
+                  totalBalance={renderTotatBalance}
+                  logoutHandler={props.logoutHandler}
+                />
+              )}
+            />
+          </Switch>
+        </Suspense>
+        {/* <Chart /> */}
+      </Grid>
+    </Layout>
   );
 };
 
