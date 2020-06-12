@@ -60,6 +60,7 @@ const Chart = () => {
       <Box w='full'>
         <Box h='540px' p='0px' m='0px' w='full'>
           <iframe
+          title={'Crypto Live Data'}
             src={`https://widget.coinlib.io/widget?type=chart&theme=light&coin_id=145&pref_coin_id=1505`}
             width='100%'
             height='536px'
@@ -78,40 +79,3 @@ const Chart = () => {
 };
 
 export default Chart;
-
-{
-  /* <Text mt={6} fontWeight='400' color='#50596B'>
-          Current Price
-        </Text>
-        <Heading size='2xl' fontWeight='400' color='#0D3578' mt={2}>
-          $9,523.59
-        </Heading>
-
-        <Text fontWeight='600' fontSize='13px' color='red.400'>
-          -$549.32 (-5.42%) <span style={{ color: 'gray' }}>today</span>
-        </Text> */
-}
-
-{
-  /* <Box
-              color='white'
-              lineHeight='14px'
-              fontWeight='400'
-              fontSize='11px'
-              boxSizing='border-box'
-              w='full'
-            >
-               <Box
-                as='a'
-                href='https://coinlib.io'
-                target='_blank'
-                fontWeight='500'
-                color='white'
-                textDecoration='none'
-                fontSize='11px'
-              >
-                Cryptocurrency Prices
-              </Box>
-              &nbsp;by Coinlib 
-            </Box> */
-}

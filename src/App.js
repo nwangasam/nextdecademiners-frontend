@@ -1,59 +1,13 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import { Heading, Text, Flex, Grid, useDisclosure } from "@chakra-ui/core";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import "./App.css";
-
-import Layout from "./components/Layout/Layout";
-import Toolbar from "./components/Toolbar/Toolbar";
-import MainNavigation from "./components/Navigation/MainNavigation/MainNavigation";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Crypto from "./components/Crypto/Crypto";
-import Chart from "./components/Chart/Chart";
-import Deposit from "./components/Deposit/Deposit";
-import Withdraw from "./components/Withdraw/Withdraw";
-import Invest from "./components/Investment/Investment";
 
 import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 
 import LandingPage from "./pages/user/landing";
-
-// const App = (props) => {
-//   const { isOpen, onClose, onToggle } = useDisclosure();
-
-//   return (
-//     <Layout
-//       // header={
-//       //   <Toolbar>
-//       //     <MainNavigation toggleSidebar={onToggle} isOpen={isOpen} />
-//       //   </Toolbar>
-//       // }
-//     >
-//       <Grid
-//         gap={4}
-//         templateColumns={{ base: '1fr', lg: '240px repeat(2, 1fr)' }}
-//       >
-//         {/* <Route
-//           path='/'
-//           render={(props) => (
-//             <Sidebar {...props} closeSidebar={onClose} isOpen={isOpen} />
-//           )}
-//         /> */}
-//         <Switch>
-//           <Route path='/home' exact component={LandingPage} />
-//           <Route path='/' exact component={Crypto} />
-//           <Route path='/deposit' exact component={Deposit} />
-//           <Route path='/withdraw' exact component={Withdraw} />
-//           <Route path='/invest' exact component={Invest} />
-//           <Route path='/signup' exact component={Signup} />
-//           <Route path='/login' exact component={Login} />
-//         </Switch>
-//         {/* <Chart /> */}
-//       </Grid>
-//     </Layout>
-//   );
-// };
+import Dashboard from "./containers/dashboard";
 
 class App extends React.Component {
   state = {
@@ -72,7 +26,6 @@ class App extends React.Component {
     if (new Date(expiryDate) <= new Date()) {
       return this.logoutHandler();
     }
-
     const userId = localStorage.getItem("userId");
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();
@@ -85,6 +38,7 @@ class App extends React.Component {
     localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
     localStorage.removeItem("userId");
+    console.log('You just logged out')
   };
 
   setAutologout = (milliseconds) => {
@@ -108,25 +62,30 @@ class App extends React.Component {
         }),
       });
       if (response.status === 422) {
-        throw new Error("Validation failed");
+        const result = await response.json();
+        this.setState({ error: result.message, authLoading: false });
+        return;
       }
       if (response.status !== 200 && response.status !== 201) {
-        throw new Error("Could not authenticated you!");
+        const result = await response.json();
+        this.setState({ error: result.message, authLoading: false });
+        return;
       }
       const { token, userId } = await response.json();
       this.setState({
+        isAuth: true,
         token,
         userId,
-        isAuth: true,
         authLoading: false,
       });
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
       const remainingMilliseconds = 60 * 60 * 1000 * 24;
-      const expiryDate = new Date(new Date.getTime() + remainingMilliseconds);
+      const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
       localStorage.setItem("expiryDate", expiryDate.toISOString());
       this.setAutologout(remainingMilliseconds);
     } catch (err) {
+      console.log(err);
       this.setState({
         isAuth: false,
         authLoading: false,
@@ -142,25 +101,30 @@ class App extends React.Component {
       const res = await fetch("http://localhost:8080/auth/signup", {
         method: "PUT",
         headers: {
-          "Content-Typ": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: authData.name.value,
           email: authData.email.value,
           password: authData.password.value,
+          confirmPassword: authData.confirmPassword.value,
         }),
       });
       if (res.status === 422) {
-        throw new Error(
-          "Validation failed. Make sure the email address isn't used already."
-        );
+        const result = await res.json();
+        this.setState({ error: result.data[0], authLoading: false });
+        console.log(result.data[0])
+        return;
       }
       if (res.status !== 200 && res.status !== 201) {
-        throw new Error("Creating a user failed");
+        const result = await res.json();
+        console.log(result.data[0])
+        this.setState({ error: result.data[0], authLoading: false });
+        return;
       }
-      const result = await res.json();
+      // const result = await res.json();
       this.setState({ isAuth: false, authLoading: false });
-      this.props.history.replace("/");
+      this.props.history.replace("/auth/login");
     } catch (err) {
       this.setState({
         isAuth: false,
@@ -168,6 +132,10 @@ class App extends React.Component {
         error: err,
       });
     }
+  };
+
+  handleError = () => {
+    this.setState({ error: null, authLoading: false });
   };
 
   render() {
@@ -181,6 +149,8 @@ class App extends React.Component {
               {...props}
               onSignup={this.signupHandler}
               loading={this.state.authLoading}
+              error={this.state.error}
+              handleError={this.handleError}
             />
           )}
         />
@@ -191,6 +161,8 @@ class App extends React.Component {
               {...props}
               onLogin={this.loginHandler}
               loading={this.state.authLoading}
+              error={this.state.error}
+              handleError={this.handleError}
             />
           )}
         />
@@ -201,12 +173,18 @@ class App extends React.Component {
     if (this.state.isAuth) {
       routes = (
         <Switch>
+          <Redirect from="/auth/login" to="/" />
+          <Redirect from="/auth/signup" to="/" />
           <Route
             path="/"
-            exact
-            render={(props) => {
-              console.log(`You're now authenticated!`);
-            }}
+            render={(props) => (
+                <Dashboard
+                  {...props}
+                  userId={this.state.userId}
+                  token={this.state.token}
+                  logoutHandler={this.logoutHandler}
+                />
+            )}
           />
         </Switch>
       );
@@ -216,4 +194,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

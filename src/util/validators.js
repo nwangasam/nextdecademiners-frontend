@@ -16,3 +16,8 @@ export const email = (value) => {
     value
   );
 };
+
+export const equals = (compare) => (value) => {
+  console.log(compare);
+  return value === compare;
+};

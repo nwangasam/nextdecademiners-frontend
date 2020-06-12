@@ -7,12 +7,13 @@ const Layout = (props) => {
     pos: 'fixed',
     zIndex: 'toast',
     left: '0',
-    top: '0'
+    top: '0',
+    p: '0'
   }
 
   const mainSettings = {
-    // mt: '6rem',
-    // p: { base: '0 1rem', md: '0 1rem' }
+    mt: '7.5rem',
+    p: { base: '2rem 1rem', md: '2rem 1rem' }
   }
 
   return (

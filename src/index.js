@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router } from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import App from './App';
-import { ThemeProvider, CSSReset } from '@chakra-ui/core';
+import App from "./App";
+import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 
 const ChakraUIProvider = ({ children }) => (
   <ThemeProvider>
@@ -14,14 +14,12 @@ const ChakraUIProvider = ({ children }) => (
 );
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <ChakraUIProvider>
-        <App />
-      </ChakraUIProvider>
-    </Router>
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Router>
+    <ChakraUIProvider>
+      <App />
+    </ChakraUIProvider>
+  </Router>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

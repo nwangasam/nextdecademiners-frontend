@@ -4,14 +4,16 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  CloseButton,
   InputGroup,
   InputRightElement,
   Stack,
   FormHelperText,
   Button,
-  Grid,
   Image,
-  Flex,
   Text,
   Icon,
   Link,
@@ -42,6 +44,12 @@ class Signup extends Component {
         valid: false,
         touched: false,
         validators: [required, length({ min: 5 })],
+      },
+      confirmPassword: {
+        value: "",
+        valid: false,
+        touched: false,
+        validators: [required],
       },
     },
     formIsValid: false,
@@ -77,35 +85,28 @@ class Signup extends Component {
 
   render() {
     const { signupForm, formIsValid } = this.state;
+    console.log(this.props);
 
     return (
       <Box
         maxW="460px"
         bg="white"
         borderRadius="8px"
-        margin="auto auto"
-        border="1px solid #EEE"
+        margin="3rem auto"
         p={5}
         pt="0"
       >
         <Box
-          textAlign="center"
-          pos="relative"
-          w="80%"
-          mx="auto"
-          bottom="1rem"
-          p={"8px"}
-          bg="white"
-        >
-          <RouterLink to="/">
-            <Image
-              src={Logo}
-              alt="Nextdecademiners logo"
-              mx="auto"
-              width="75%"
-            />
-          </RouterLink>
-        </Box>
+        textAlign="center"
+        w="80%"
+        mx="auto"
+        margin='auto auto 2.4rem'
+        p={"8px"}
+      >
+        <RouterLink to="/">
+          <Image src={Logo} alt="Nextdecademiners logo" mx="auto" width="85%" />
+        </RouterLink>
+      </Box>
         <Heading
           mb={8}
           fontSize={{ base: "27px", lg: "30px" }}
@@ -114,13 +115,27 @@ class Signup extends Component {
         >
           Create an Account
         </Heading>
+        {this.props.error && (
+          <Alert status="error" my={4}>
+            <AlertIcon />
+            <AlertTitle mr={2}>
+              {this.props.error.message || this.props.error.msg}
+            </AlertTitle>
+            <CloseButton
+              position="absolute"
+              right="8px"
+              top="8px"
+              onClick={this.props.handleError}
+            />
+          </Alert>
+        )}
         <form onSubmit={(e) => this.props.onSignup(e, signupForm)}>
           <Stack spacing={4} mb={4}>
             <FormControl isRequired>
               <FormLabel htmlFor="name">Username</FormLabel>
               <InputGroup>
                 <Input
-                  boxShadow={'inset 0 1px 2px rgba(27,31,35,.075)'}
+                  boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
                   name="name"
                   placeholder="e.g. john doe"
                   type="text"
@@ -129,7 +144,8 @@ class Signup extends Component {
                   valid={signupForm["name"].valid}
                 />
                 {signupForm["name"].touched && (
-                  <InputRightElement style={{ transition: 'all .3s ease' }}
+                  <InputRightElement
+                    style={{ transition: "all .3s ease" }}
                     children={
                       <Icon
                         name={signupForm["name"].valid ? "check" : "warning"}
@@ -151,10 +167,15 @@ class Signup extends Component {
                   onChange={this.inputChangeHandler}
                   valid={signupForm["email"].valid}
                   value={signupForm["email"].value}
-                  boxShadow={'inset 0 1px 2px rgba(27,31,35,.075)'}
+                  boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
+                  errorBorderColor="red.300"
+                  isInvalid={ this.props.error && this.props.error.msg && this.props.error.msg
+                    .toLowerCase()
+                    .includes("mail")}
                 />
                 {signupForm["email"].touched && (
-                  <InputRightElement style={{ transition: 'all .3s ease' }}
+                  <InputRightElement
+                    style={{ transition: "all .3s ease" }}
                     children={
                       <Icon
                         name={signupForm["email"].valid ? "check" : "warning"}
@@ -170,7 +191,7 @@ class Signup extends Component {
             <FormControl w="full" isRequired>
               <FormLabel htmlFor="password">Password</FormLabel>
               <InputGroup size="md">
-                {/* <Input
+                <Input
                   pr="4.5rem"
                   name="password"
                   type="password"
@@ -178,14 +199,22 @@ class Signup extends Component {
                   onChange={this.inputChangeHandler}
                   valid={signupForm["password"].valid}
                   value={signupForm["password"].value}
-                  bg='red'
-                  boxShadow={'inset 0 1px 2px rgba(27,31,35,.075)'}
-                /> */}
+                  bg="red"
+                  boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
+                  errorBorderColor="red.300"
+                  isInvalid={
+                    this.props.error && this.props.error.msg &&
+                    this.props.error.msg.toLowerCase().includes("password")
+                  }
+                />
                 {signupForm["password"].touched && (
-                  <InputRightElement style={{ transition: 'all .3s ease' }}
+                  <InputRightElement
+                    style={{ transition: "all .3s ease" }}
                     children={
                       <Icon
-                        name={signupForm["password"].valid ? "check" : "warning"}
+                        name={
+                          signupForm["password"].valid ? "check" : "warning"
+                        }
                         color={
                           signupForm["password"].valid ? "green.500" : "red.500"
                         }
@@ -193,11 +222,46 @@ class Signup extends Component {
                     }
                   />
                 )}
-                {/* <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleClick}>
-                    {show ? "Hide" : "Show"}
-                  </Button>
-                </InputRightElement> */}
+              </InputGroup>
+            </FormControl>
+            <FormControl w="full" isRequired>
+              <FormLabel htmlFor="confirmPassword">
+                Enter password again
+              </FormLabel>
+              <InputGroup size="md">
+                <Input
+                  pr="4.5rem"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Enter same password again"
+                  onChange={this.inputChangeHandler}
+                  valid={signupForm["confirmPassword"].valid}
+                  value={signupForm["confirmPassword"].value}
+                  bg="red"
+                  boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
+                  errorBorderColor="red.300"
+                  isInvalid={this.props.error && this.props.error.msg && this.props.error.msg.toLowerCase()
+                    .includes("password")}
+                />
+                {signupForm["confirmPassword"].touched && (
+                  <InputRightElement
+                    style={{ transition: "all .3s ease" }}
+                    children={
+                      <Icon
+                        name={
+                          signupForm["confirmPassword"].valid
+                            ? "check"
+                            : "warning"
+                        }
+                        color={
+                          signupForm["confirmPassword"].valid
+                            ? "green.500"
+                            : "red.500"
+                        }
+                      />
+                    }
+                  />
+                )}
               </InputGroup>
             </FormControl>
             <FormHelperText>
@@ -228,6 +292,7 @@ class Signup extends Component {
             w="full"
             isDisabled={!formIsValid || this.props.loading}
             isLoading={this.props.loading}
+            loadingText="Submitting"
           >
             Continue
           </Button>

@@ -1,3 +1,8 @@
+body {
+  min-height: 100vh;
+  max-width: 100%;
+}
+
 svg {
   width: 22px;
 }
@@ -8,7 +13,7 @@ ul {
 }
 
 .wrapper {
-  max-width: 64rem;
+  max-width: 90rem;
   margin: auto;
   padding: 0 1.2rem;
 }

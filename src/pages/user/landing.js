@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, Route } from 'react-router-dom';
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Text,
   Flex,
@@ -8,23 +8,19 @@ import {
   Grid,
   Heading,
   Button,
-  List,
-  ListItem,
-  ListIcon,
   Divider,
-  Icon,
 } from "@chakra-ui/core";
 
 import heroBg from "../../assets/images/bg.png";
-import logoSrc from "../../assets/images/site-logo.png";
-
+import logoSrc from "../../assets/images/logo.png";
 import {
   FcComboChart,
   FcCurrencyExchange,
   FcPositiveDynamic,
   FcConferenceCall,
 } from "react-icons/fc";
-import { ReactComponent as MobileToggle } from "../../assets/images/mobile-toggle.svg";
+
+import Plan from "../../components/Investment/plan";
 
 const LandingPage = () => {
   const crypto = [
@@ -33,42 +29,40 @@ const LandingPage = () => {
     { id: "bitcoin-cash", label: "Bitcoin Cash", price: "8,500" },
   ];
 
+  const renderCrypto = crypto.map((c, i) => (
+    <Box
+      flex={"1"}
+      key={c.id}
+      as="li"
+      ml={{ lg: "3rem" }}
+      textAlign="center"
+      d={{ lg: "flex" }}
+      flexDirection={{ lg: "column" }}
+    >
+      <Text
+        mb="-1px"
+        color={"#c2c9d5"}
+        fontWeight="normal"
+        fontSize={{ base: ".95rem", lg: "1.05rem" }}
+        whiteSpace="nowrap"
+      >
+        {c.label}
+      </Text>
+      <Text
+        color={"white"}
+        fontSize={{ base: ".95rem", lg: "1.05rem" }}
+        fontWeight={"500"}
+      >
+        ${c.price}
+      </Text>
+    </Box>
+  ));
+
   const benefits = [
     { icon: FcComboChart, label: "Earn Profit Hourly" },
     { icon: FcCurrencyExchange, label: "Deposit as low as $100" },
     { icon: FcConferenceCall, label: "50+ Expert traders" },
     { icon: FcPositiveDynamic, label: "Long term program" },
-  ];
-
-  const plans = [
-    {
-      label: "BRONZE PLAN",
-      interest: "1.4",
-      duration: "24hr",
-      features: ["Instant withdrawal", "Bitcoin, Ethereum & Bitcoin Cash"],
-      priceRange: ["100", "499"],
-    },
-    {
-      label: "SILVER PLAN",
-      interest: "6",
-      duration: "65min",
-      features: ["Instant withdrawal", "Bitcoin, Ethereum & Bitcoin Cash"],
-      priceRange: ["500", "2999"],
-    },
-    {
-      label: "GOLD PLAN",
-      interest: "10",
-      duration: "24hr",
-      features: ["Instant withdrawal", "Bitcoin, Ethereum & Bitcoin Cash"],
-      priceRange: ["3000", "9999"],
-    },
-    {
-      label: "PLATINUM PLAN",
-      interest: "15",
-      duration: "7d",
-      features: ["Instant withdrawal", "Bitcoin, Ethereum & Bitcoin Cash"],
-      priceRange: ["10000", "100000"],
-    },
   ];
 
   const whyChooseUs = [
@@ -91,46 +85,40 @@ const LandingPage = () => {
 
   return (
     <Box bg={"#F5F5F5"} minH="100vh">
-      <Box as="header" boxShadow="" bg="#152136" p={"8px 16px"}>
+      <Box as="header" boxShadow="" bg="#152136" p={"8px 0"}>
         <div className="wrapper">
-          <Flex as="nav" justify={"space-between"} align="center">
+          <Flex padding={"0"} as="nav" justify={"space-between"} align="center">
             <Box>
               <Image src={logoSrc} alt="" />
             </Box>
-            <Box color={"white"}>
-              <MobileToggle />
+            <Box d={{ base: "none", lg: "flex" }}>{renderCrypto}</Box>
+            <Box color={"white"} d={{ base: "inline-block", lg: "none" }}>
+              <RouterLink to="/auth/signup">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  variantColor="orange.400"
+                  color="orange.400"
+                >
+                  Get Started
+                </Button>
+              </RouterLink>
             </Box>
           </Flex>
-          <Divider borderColor={"rgba(225, 225, 225, .1)"} />
-          <Flex
-            as="ul"
-            p="0"
-            m="0"
-            style={{ listStyle: "none" }}
-            align="center"
-            justify={"space-around"}
-            color={"white"}
-          >
-            {crypto.map((c, i) => (
-              <Box flex={"1"} key={c.id} as="li" textAlign="center">
-                <Text
-                  mb="-1px"
-                  color={"#c2c9d5"}
-                  fontWeight="normal"
-                  fontSize={{ base: "16px", lg: 5 }}
-                >
-                  {c.label}
-                </Text>
-                <Text
-                  color={""}
-                  fontSize={{ base: "16px", lg: 5 }}
-                  fontWeight={"500"}
-                >
-                  ${c.price}
-                </Text>
-              </Box>
-            ))}
-          </Flex>
+          <Divider style={{ opacity: ".1" }} d={{ lg: "none" }} />
+          <Box d={{ lg: "none" }}>
+            <Flex
+              as="ul"
+              p="0"
+              m="0"
+              style={{ listStyle: "none" }}
+              align="center"
+              justify={"space-around"}
+              color={"white"}
+            >
+              {renderCrypto}
+            </Flex>
+          </Box>
         </div>
       </Box>
       <Box
@@ -176,12 +164,10 @@ const LandingPage = () => {
             maxW="260px"
             _hover={{ color: "#F3703A", bg: "#FFF" }}
           >
-            <Link to='/auth/signup'>
-            Get Started
-            </Link>
+            <RouterLink to="/auth/signup">Get Started</RouterLink>
           </Button>
           <Text
-            fontSize="14px"
+            fontSize={{ base: "md", md: "xl" }}
             lineHeight="18px"
             color="white"
             textAlign="center"
@@ -214,97 +200,35 @@ const LandingPage = () => {
           ))}
         </Grid>
         <Box my={10} textAlign={"center"}>
-          <Heading fontSize={"18px"}>SINCE</Heading>
+          <Heading fontSize={"18px"} color={"#602c16"}>
+            SINCE
+          </Heading>
           <Text fontSize={"2xl"}>December 1st, 2018</Text>
         </Box>
         <Box textAlign={"center"} maxW={"1140px"} mx={"auto"}>
           <Heading fontSize="18px" mb={8} color={"#602c16"}>
             CHOOSE AN INVESTMENT PLAN
           </Heading>
-          <Grid
-            templateColumns={`
-        repeat(auto-fit, minmax(240px, 1fr))
-      `}
-            gap={4}
-          >
-            {plans.map((p, i) => (
-              <Flex
-                key={i}
-                textAlign={"center"}
-                direction="column"
-                borderRadius={"8px"}
-                p={6}
-                border={"1px solid #CBCBCB"}
-                bg={'white'}
-                boxShadow='inset 0 4px 12px rgba(0,0,0,.15)'
-              >
-                <Text
-                  mb={4}
-                  color={"#602c16"}
-                  fontSize={"12px"}
-                  fontWeight={"bold"}
-                  letterSpacing={"2px"}
-                >
-                  {p.label}
-                </Text>
-                <Text
-                  mb={8}
-                  fontSize={"3xl"}
-                  fontWeight={"bold"}
-                  color={"#152136"}
-                >
-                  {p.interest}%
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "500",
-                      marginLeft: "4px",
-                      color: 'gray'
-                    }}
-                  >
-                    /{p.duration}
-                  </span>
-                </Text>
-                <List spacing={3} as="ul" mb={4} lineHeight={1}>
-                  {p.features.map((l) => (
-                    <ListItem>
-                      <ListIcon icon="check" color="#152136" />
-                      {l}
-                    </ListItem>
-                  ))}
-                  <ListItem fontWeight={"bold"}>
-                    <ListIcon icon="check" color="#152136" />${p.priceRange[0]}{" "}
-                    - ${p.priceRange[1]}
-                  </ListItem>
-                </List>
-                <Button
-                  rounded="full"
-                  mx="auto"
-                  w={"140px"}
-                  fontSize={"12px"}
-                  fontWeight={"normal"}
-                  variant={"outline"}
-                  color={"#F3703A"}
-                  variantColor={"orange"}
-                >
-                  SIGN UP
-                </Button>
-              </Flex>
-            ))}
-          </Grid>
+          <Plan />
         </Box>
-        <Grid mt={16} gap={5} templateColumns={{ base: "1fr", lg: "2fr 1fr" }}>
+        <Grid
+          mt={16}
+          rowGap={5}
+          templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
+          alignItems="center"
+          mx={4}
+        >
           <Heading
             textAlign={"center"}
             gridColumn={"1 / -1"}
             fontSize="18px"
-            mb={8}
+            mb={4}
             color={"#602c16"}
           >
             ABOUT NEXTDECADEMINERS.COM
           </Heading>
-          <Box>
-            <Text fontSize={"16px"} lineHeight={"26px"}>
+          <Box borderRight={{ lg: "1px solid #eee" }} pr={{ lg: 3 }}>
+            <Text fontSize={"18px"} lineHeight={"32px"}>
               Nextdecademiners.com is United Kingdom registered company,
               (Company Number: 06416732, Enterprise House, 2 Pass Street,
               Oldham, Manchester, United Kingdom, OL9 6HZ.). We are an 7/24
@@ -319,7 +243,6 @@ const LandingPage = () => {
               and earned tens of millions of dollars. we are accept Bitcoin,
               Ethereum and Bitcoin Cash.
             </Text>
-            <Text>Read more</Text>
           </Box>
           <Box textAlign={"center"} p={{ base: 6 }}>
             <Heading fontSize={"18px"} color={"#602c16"} textAlign={"center"}>
@@ -334,7 +257,7 @@ const LandingPage = () => {
           <Heading
             fontSize={"18px"}
             color={"#602c16"}
-            mb={{ base: 8 }}
+            my={{ base: 8 }}
             textAlign={"center"}
           >
             WHY CHOOSE NEXTDECADEMINERS.COM?
@@ -344,38 +267,36 @@ const LandingPage = () => {
             templateColumns={"repeat(auto-fit, minmax(240px, 1fr))"}
           >
             {whyChooseUs.map((_, i) => (
-              <Box key={i} pl={{ base: 9 }}>
-                <Heading mb={3} fontSize={"17px"} fontWeight="500">
+              <Box key={i} pl={{ base: "6rem", lg: "0" }}>
+                <Heading mb={3} fontSize={"20px"} fontWeight="500">
                   {_.title}
                 </Heading>
-                <Text>{_.content}</Text>
+                <Text fontSize="18px">{_.content}</Text>
               </Box>
             ))}
           </Grid>
-          <Button
-            boxShadow="0 4px 8px rgba(0,0,0,.1)"
-            borderRadius="4px"
-            h="50px"
-            w="full"
-            bg="#F3703A"
-            lineHeight="50px"
-            my={8}
-            color={"white"}
-            fonWeight={"bold"}
-            fontSize={"20px"}
-            maxW={"280px"}
-            ml="2rem"
-            _hover={{ color: "#F3703A", bg: "#FFF" }}
-          >
-           <Link to='/auth/signup'>
-            Get Started
-            </Link>
-          </Button>
+          <Box w="full" mx="auto" maxW={"480px"}>
+            <Button
+              boxShadow="0 4px 8px rgba(0,0,0,.1)"
+              borderRadius="4px"
+              h="4rem"
+              w="100%"
+              bg="#F3703A"
+              lineHeight="4rem"
+              margin="4rem auto"
+              color={"white"}
+              fonWeight={"bold"}
+              fontSize={"20px"}
+              _hover={{ color: "#F3703A", bg: "#FFF" }}
+            >
+              <RouterLink to="/auth/signup">Get Started Now!</RouterLink>
+            </Button>
+          </Box>
         </Box>
       </div>
       <Box bg={"#152136"} as="footer" py={6} color={"white"}>
         <div className="wrapper">
-          <Flex wrap="wrap" justify={"space-between"}>
+          <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap={4}>
             <Box as="ul" my={9} fontSize={"14px"} lineHeight={"24px"}>
               <Heading fontWeight={"500"} fontSize={"15px"}>
                 LINK
@@ -421,13 +342,15 @@ const LandingPage = () => {
               </Text>
             </Box>
             <Box mt={5} color={"#b7c0d1"}>
-              <Image src={logoSrc} alt="" />
+              <RouterLink to="/">
+                <Image src={logoSrc} alt="" />
+              </RouterLink>
               <Text lineHeight={3} fontSize={"12px"}>
                 &copy; 2020 NEXTDECADEMINERS.COM
               </Text>
               <Text fontSize={"12px"}>v.1.2.0</Text>
             </Box>
-          </Flex>
+          </Grid>
         </div>
       </Box>
     </Box>
