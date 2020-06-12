@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { Grid, useDisclosure } from "@chakra-ui/core";
 import { Route, Switch } from "react-router-dom";
-import { Skeleton, Heading } from "@chakra-ui/core";
+import { Skeleton, Heading, Spinner } from "@chakra-ui/core";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Layout from "../components/Layout/Layout";
 
@@ -26,6 +26,7 @@ const Dashboard = (props) => {
   const [userWithdrawals, setUserWithdrawals] = useState(null);
 
   const url = props.match.url;
+  console.log(url);
 
   const renderTotatBalance = (currency) => {
     if (!user) return;
@@ -72,94 +73,101 @@ const Dashboard = (props) => {
   }, []);
 
   return (
-    <Layout
-      header={
-        <Suspense fallback={<Skeleton height="55px" />}>
-          <Toolbar>
-            <MainNavigation
-              toggleSidebar={onToggle}
-              isOpen={isOpen}
-              user={user}
-              totalBalance={renderTotatBalance}
-            />
-          </Toolbar>
-        </Suspense>
-      }
-      sidebar={
-        <Sidebar
-          {...props}
-          closeSidebar={onClose}
-          isOpen={isOpen}
-          user={user}
-          totalBalance={renderTotatBalance}
-        />
-      }
-    >
-      <Grid
-        gap={4}
-        templateColumns={{ base: "1fr", lg: "240px repeat(2, 1fr)" }}
-        bg="orange"
-      >
-        <Switch>
-          <Route
-            path={`/`}
-            render={(properties) => (
-              <Suspense fallback={<Heading>Crypto Loading...</Heading>}>
-                <Crypto
+    <Suspense fallback={
+      <>
+        <Skeleton h={'12vh'} rounded='full' m={4} />
+        <Skeleton h={'8vh'} rounded='full' m={4} />
+        <Skeleton h={'70vh'} rounded='full' m={4} />
+      </>
+    }>
+      <Route>
+        <Layout
+          header={
+            <Toolbar>
+              <MainNavigation
+                toggleSidebar={onToggle}
+                isOpen={isOpen}
+                user={user}
+                totalBalance={renderTotatBalance}
+              />
+            </Toolbar>
+          }
+        >
+          <Grid
+            gap={4}
+            templateColumns={{ base: "1fr", lg: "240px repeat(2, 1fr)" }}
+            bg="orange"
+          >
+            <Route
+              path="/"
+              render={(properties) => (
+                <Sidebar
                   {...properties}
+                  closeSidebar={onClose}
+                  isOpen={isOpen}
                   user={user}
                   totalBalance={renderTotatBalance}
-                  deposits={user && userDeposits}
-                  withdrawals={user && userWithdrawals}
                 />
-              </Suspense>
-            )}
-          />
-          <Route
-            path={`/${url}/desposit`}
-            exact
-            render={(properties) => (
-              <Deposit {...properties} user={user} token={props.token} />
-            )}
-          />
-          <Route path={`/${url}/invest`} exact component={Invest} />
-          <Route
-            path={`/${url}/withdraw`}
-            exact
-            render={(properties) => (
-              <Withdraw
-                {...properties}
-                user={user}
-                token={props.token}
-                totalBalance={renderTotatBalance}
+              )}
+            />
+            <Switch>
+              <Route
+                path="/"
+                exact
+                render={(properties) => (
+                  <Crypto
+                    {...properties}
+                    user={user}
+                    totalBalance={renderTotatBalance}
+                    deposits={user && userDeposits}
+                    withdrawals={user && userWithdrawals}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path={`/${url}/admin`}
-            exact
-            render={(properties) => (
-              <Admin {...properties} user={user} token={props.token} />
-            )}
-          />
-          <Route
-            path={`/${url}/account`}
-            exact
-            render={(properties) => (
-              <Account
-                {...properties}
-                user={user}
-                totalBalance={renderTotatBalance}
-                logoutHandler={props.logoutHandler}
+
+              <Route
+                path="/deposit"
+                render={(properties) => (
+                  <Deposit {...properties} user={user} token={props.token} />
+                )}
               />
-            )}
-          />
-        </Switch>
-        <Suspense fallback={<Heading>Chart Loading...</Heading>}>
-          <Chart />
-        </Suspense>
-      </Grid>
-    </Layout>
+
+              <Route path="/invest" component={Invest} />
+
+              <Route
+                path="/withdraw"
+                render={(properties) => (
+                  <Withdraw
+                    {...properties}
+                    user={user}
+                    token={props.token}
+                    totalBalance={renderTotatBalance}
+                  />
+                )}
+              />
+              <Route
+                path="/admin"
+                render={(properties) => (
+                  <Admin {...properties} user={user} token={props.token} />
+                )}
+              />
+              <Route
+                path="/account"
+                render={(properties) => (
+                  <Account
+                    {...properties}
+                    user={user}
+                    totalBalance={renderTotatBalance}
+                    logoutHandler={props.logoutHandler}
+                  />
+                )}
+              />
+            </Switch>
+            <Chart />
+          </Grid>
+        </Layout>
+      </Route>
+    </Suspense>
   );
 };
 

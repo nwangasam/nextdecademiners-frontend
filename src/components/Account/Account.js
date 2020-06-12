@@ -33,13 +33,13 @@ const Account = ({ user, logoutHandler }) => {
         <Heading fontSize="sm">Email Address</Heading>
         <Text>{user && user.email}</Text>
       </Box>
-      {user.phone && (
+      {user && user.phone && (
         <Box fontSize="lg" shadow="md" p={3}>
           <Heading fontSize="sm">Phone number</Heading>
           <Text>{user.phone}</Text>
         </Box>
       )}
-      {user.address && (
+      {user && user.address && (
         <Box fontSize="lg" shadow="md" p={3}>
           <Heading fontSize="sm">Address</Heading>
           <Text>{user.email}</Text>

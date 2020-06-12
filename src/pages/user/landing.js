@@ -129,7 +129,7 @@ const LandingPage = () => {
         textAlign={"center"}
         minH="75vh"
       >
-        <Box pt={{ base: "10vh", lg: "20vh" }} px={"20px"}>
+        <Box pt={{ base: "10vh", md: '15vh', lg: "20vh" }} px={"20px"}>
           <Heading
             fontWeight="bold"
             lineHeight="36px"
@@ -150,22 +150,24 @@ const LandingPage = () => {
           >
             Nextdecademiners Experts help you make Massive profit hourly
           </Heading>
-          <Button
-            boxShadow="0 8px 16px rgba(0,0,0,.3)"
-            borderRadius="4px"
-            h="50px"
-            w="full"
-            bg="#F3703A"
-            lineHeight="50px"
-            mb="18px"
-            color={"white"}
-            fonWeight={"bold"}
-            fontSize={"18px"}
-            maxW="260px"
-            _hover={{ color: "#F3703A", bg: "#FFF" }}
-          >
-            <RouterLink to="/auth/signup">Get Started</RouterLink>
-          </Button>
+          <RouterLink to="/auth/signup">
+            <Button
+              boxShadow="0 8px 16px rgba(0,0,0,.3)"
+              borderRadius="4px"
+              h="50px"
+              w="full"
+              bg="#F3703A"
+              lineHeight="50px"
+              my={{ base: 6, md: 8}}
+              color={"white"}
+              fonWeight={"bold"}
+              fontSize={"18px"}
+              maxW="260px"
+              _hover={{ color: "#F3703A", bg: "#FFF" }}
+            >
+              Get Started
+            </Button>
+          </RouterLink>
           <Text
             fontSize={{ base: "md", md: "xl" }}
             lineHeight="18px"

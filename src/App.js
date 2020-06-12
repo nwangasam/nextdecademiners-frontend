@@ -154,7 +154,7 @@ class App extends React.Component {
           render={(props) => (
             <Suspense
               fallback={
-                <Grid p='absolute' h='100vh' style={{ placeItems: 'center' }}>
+                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
                   <Spinner
                     thickness="4px"
                     speed="0.65s"
@@ -173,7 +173,17 @@ class App extends React.Component {
           path="/auth/signup"
           render={(props) => (
             <Suspense
-              fallback={<Heading textAlign="center">Loading Signup...</Heading>}
+              fallback={
+                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                </Grid>
+              }
             >
               <Signup
                 {...props}
@@ -189,7 +199,17 @@ class App extends React.Component {
           path="/auth/login"
           render={(props) => (
             <Suspense
-              fallback={<Heading textAlign="center">Loading login...</Heading>}
+              fallback={
+                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                </Grid>
+              }
             >
               <Login
                 {...props}
@@ -207,17 +227,31 @@ class App extends React.Component {
     if (this.state.isAuth) {
       routes = (
         <Switch>
-          <Redirect from="/auth/login" to="/dashboard" />
-          <Redirect from="/auth/signup" to="/dashboard" />
+          <Redirect from="/auth/login" to="/" />
+          <Redirect from="/auth/signup" to="/" />
           <Route
-            path="/dashboard"
+            path="/"
             render={(props) => (
-              <Dashboard
-                {...props}
-                userId={this.state.userId}
-                token={this.state.token}
-                logoutHandler={this.logoutHandler}
-              />
+              <Suspense
+                fallback={
+                  <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="blue.500"
+                      size="xl"
+                    />
+                  </Grid>
+                }
+              >
+                <Dashboard
+                  {...props}
+                  userId={this.state.userId}
+                  token={this.state.token}
+                  logoutHandler={this.logoutHandler}
+                />
+              </Suspense>
             )}
           />
         </Switch>
