@@ -9,7 +9,10 @@ import {
   AlertTitle,
   CloseButton,
   InputGroup,
+  Divider,
+  InputLeftAddon,
   InputRightElement,
+  InputLeftElement,
   Stack,
   FormHelperText,
   Button,
@@ -51,6 +54,12 @@ class Signup extends Component {
         touched: false,
         validators: [required],
       },
+      referalEmail: {
+        value: "",
+        valid: true,
+        touched: false,
+        validators: []
+      },
     },
     formIsValid: false,
   };
@@ -60,9 +69,11 @@ class Signup extends Component {
     const value = e.target.value;
     this.setState((prevState) => {
       let isValid = true;
-      for (const validator of prevState.signupForm[input].validators) {
-        isValid = isValid && validator(value);
-      }
+      // if (prevState.signupForm[input].validators) {
+        for (const validator of prevState.signupForm[input].validators) {
+          isValid = isValid && validator(value);
+        }
+      // }
       const updatedForm = {
         ...prevState.signupForm,
         [input]: {
@@ -85,8 +96,6 @@ class Signup extends Component {
 
   render() {
     const { signupForm, formIsValid } = this.state;
-    console.log(this.props);
-
     return (
       <Box
         maxW="460px"
@@ -97,16 +106,21 @@ class Signup extends Component {
         pt="0"
       >
         <Box
-        textAlign="center"
-        w="80%"
-        mx="auto"
-        margin='auto auto 2.4rem'
-        p={"8px"}
-      >
-        <RouterLink to="/">
-          <Image src={Logo} alt="Nextdecademiners logo" mx="auto" width="85%" />
-        </RouterLink>
-      </Box>
+          textAlign="center"
+          w="80%"
+          mx="auto"
+          margin="auto auto 2.4rem"
+          p={"8px"}
+        >
+          <RouterLink to="/">
+            <Image
+              src={Logo}
+              alt="Nextdecademiners logo"
+              mx="auto"
+              width="85%"
+            />
+          </RouterLink>
+        </Box>
         <Heading
           mb={8}
           fontSize={{ base: "27px", lg: "30px" }}
@@ -134,6 +148,9 @@ class Signup extends Component {
             <FormControl isRequired>
               <FormLabel htmlFor="name">Username</FormLabel>
               <InputGroup>
+                <InputLeftAddon
+                  children={<Icon name="phone" color="gray.300" />}
+                />
                 <Input
                   boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
                   name="name"
@@ -161,6 +178,9 @@ class Signup extends Component {
             <FormControl w="full" isRequired>
               <FormLabel htmlFor="email">Email</FormLabel>
               <InputGroup>
+                <InputLeftAddon
+                  children={<Icon name="email" color="gray.300" />}
+                />
                 <Input
                   name="email"
                   placeholder="e.g. example@gmail.com"
@@ -169,9 +189,11 @@ class Signup extends Component {
                   value={signupForm["email"].value}
                   boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
                   errorBorderColor="red.300"
-                  isInvalid={ this.props.error && this.props.error.msg && this.props.error.msg
-                    .toLowerCase()
-                    .includes("mail")}
+                  isInvalid={
+                    this.props.error &&
+                    this.props.error.msg &&
+                    this.props.error.msg.toLowerCase().includes("mail")
+                  }
                 />
                 {signupForm["email"].touched && (
                   <InputRightElement
@@ -188,9 +210,15 @@ class Signup extends Component {
                 )}
               </InputGroup>
             </FormControl>
+            <Box mt={1}>
+              <Divider style={{ border: "1px solid #EEE" }} />
+            </Box>
             <FormControl w="full" isRequired>
               <FormLabel htmlFor="password">Password</FormLabel>
               <InputGroup size="md">
+                <InputLeftAddon
+                  children={<Icon name="lock" color="gray.300" />}
+                />
                 <Input
                   pr="4.5rem"
                   name="password"
@@ -203,7 +231,8 @@ class Signup extends Component {
                   boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
                   errorBorderColor="red.300"
                   isInvalid={
-                    this.props.error && this.props.error.msg &&
+                    this.props.error &&
+                    this.props.error.msg &&
                     this.props.error.msg.toLowerCase().includes("password")
                   }
                 />
@@ -225,10 +254,11 @@ class Signup extends Component {
               </InputGroup>
             </FormControl>
             <FormControl w="full" isRequired>
-              <FormLabel htmlFor="confirmPassword">
-                Enter password again
-              </FormLabel>
+              <FormLabel htmlFor="confirmPassword">Re-Enter password</FormLabel>
               <InputGroup size="md">
+                <InputLeftAddon
+                  children={<Icon name="lock" color="gray.300" />}
+                />
                 <Input
                   pr="4.5rem"
                   name="confirmPassword"
@@ -240,8 +270,11 @@ class Signup extends Component {
                   bg="red"
                   boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
                   errorBorderColor="red.300"
-                  isInvalid={this.props.error && this.props.error.msg && this.props.error.msg.toLowerCase()
-                    .includes("password")}
+                  isInvalid={
+                    this.props.error &&
+                    this.props.error.msg &&
+                    this.props.error.msg.toLowerCase().includes("password")
+                  }
                 />
                 {signupForm["confirmPassword"].touched && (
                   <InputRightElement
@@ -262,6 +295,25 @@ class Signup extends Component {
                     }
                   />
                 )}
+              </InputGroup>
+            </FormControl>
+            <Box mt={1}>
+              <Divider style={{ border: "1px solid #EEE" }} />
+            </Box>
+            <FormControl w="70" maxW={"15rem"}>
+              <FormLabel htmlFor="referalEmail">Referal Email</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  children={<Icon name="email" color="gray.300" />}
+                />
+                <Input
+                  name="referalEmail"
+                  placeholder=""
+                  onChange={this.inputChangeHandler}
+                  valid={signupForm["referalEmail"].valid}
+                  value={signupForm["referalEmail"].value}
+                  boxShadow={"inset 0 1px 2px rgba(27,31,35,.075)"}
+                />
               </InputGroup>
             </FormControl>
             <FormHelperText>

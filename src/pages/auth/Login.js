@@ -6,6 +6,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  InputLeftAddon,
   Stack,
   Alert,
   AlertIcon,
@@ -35,18 +36,18 @@ const Login = (props) => {
   const handleInputChange = (e, cb) => {
     cb(e.target.value);
     setIsFormValid(email && password);
-  }
+  };
 
   useEffect(() => {
     focusInput.current.focus();
-  }, [])
+  }, []);
 
   return (
     <Box
       maxW="460px"
       borderRadius="8px"
       margin="3rem auto"
-      minH='100vh'
+      minH="100vh"
       p={5}
       pt="0"
     >
@@ -54,7 +55,7 @@ const Login = (props) => {
         textAlign="center"
         w="80%"
         mx="auto"
-        margin='auto auto 2.4rem'
+        margin="auto auto 2.4rem"
         p={"8px"}
       >
         <RouterLink to="/">
@@ -70,34 +71,42 @@ const Login = (props) => {
         Welcome back! Login.
       </Heading>
       {props.error && (
-          <Alert status="error" my={4}>
-            <AlertIcon />
-            <AlertTitle mr={2}>
-              {props.error.message || props.error.msg || props.error}
-            </AlertTitle>
-            <CloseButton
-              position="absolute"
-              right="8px"
-              top="8px"
-              onClick={props.handleError}
-            />
-          </Alert>
-        )}
+        <Alert status="error" my={4}>
+          <AlertIcon />
+          <AlertTitle mr={2}>
+            {props.error.message || props.error.msg || props.error}
+          </AlertTitle>
+          <CloseButton
+            position="absolute"
+            right="8px"
+            top="8px"
+            onClick={props.handleError}
+          />
+        </Alert>
+      )}
       <form onSubmit={(e) => props.onLogin(e, { email, password })}>
         <Stack spacing={4} mb={4}>
           <FormControl w="full">
             <FormLabel htmlFor="email">Email</FormLabel>
-            <Input
-              ref={focusInput}
-              name="email"
-              placeholder="e.g. example@gmail.com"
-              value={email}
-              onChange={(e) => handleInputChange(e, setEmail)}
-            />
+            <InputGroup>
+              <InputLeftAddon
+                children={<Icon name="email" color="gray.300" />}
+              />
+              <Input
+                ref={focusInput}
+                name="email"
+                placeholder="e.g. example@gmail.com"
+                value={email}
+                onChange={(e) => handleInputChange(e, setEmail)}
+              />
+            </InputGroup>
           </FormControl>
           <FormControl w="full">
             <FormLabel htmlFor="password">Password</FormLabel>
             <InputGroup size="md">
+            <InputLeftAddon
+                  children={<Icon name="lock" color="gray.300" />}
+                />
               <Input
                 pr="4.5rem"
                 type={show ? "text" : "password"}

@@ -21,7 +21,7 @@ const plans = [
   },
   {
     label: "SILVER PLAN",
-    interest: "6",
+    interest: "4",
     duration: "65min",
     features: ["Instant withdrawal", "Bitcoin, Ethereum & Bitcoin Cash"],
     priceRange: ["500", "2999"],

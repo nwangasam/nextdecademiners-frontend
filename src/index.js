@@ -5,9 +5,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./App";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import customTheme from './customTheme';
 
 const ChakraUIProvider = ({ children }) => (
-  <ThemeProvider>
+  <ThemeProvider theme={customTheme}>
     <CSSReset />
     {children}
   </ThemeProvider>

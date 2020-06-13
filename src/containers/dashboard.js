@@ -3,7 +3,8 @@ import axios from "axios";
 
 import { Grid, useDisclosure } from "@chakra-ui/core";
 import { Route, Switch } from "react-router-dom";
-import { Skeleton, Heading, Spinner } from "@chakra-ui/core";
+import { Spinner } from "@chakra-ui/core";
+// import { Skeleton, Heading, Spinner } from "@chakra-ui/core";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Layout from "../components/Layout/Layout";
 
@@ -24,9 +25,6 @@ const Dashboard = (props) => {
   const [user, setUser] = useState(null);
   const [userDeposits, setUserDeposits] = useState(null);
   const [userWithdrawals, setUserWithdrawals] = useState(null);
-
-  const url = props.match.url;
-  console.log(url);
 
   const renderTotatBalance = (currency) => {
     if (!user) return;
@@ -64,7 +62,6 @@ const Dashboard = (props) => {
         setUser(user.data.user);
         setUserDeposits(deposits.data.deposits);
         setUserWithdrawals(withdrawals.data.withdrawals);
-        console.log(user);
       } catch (err) {
         console.log(err);
       }
@@ -104,7 +101,7 @@ const Dashboard = (props) => {
         />
         <Suspense
           fallback={
-            <Grid pos="0" h="100vh" style={{ placeItems: "center" }}>
+            <Grid pos="0" h="100vh" style={{ placeItems: "center" }} gap={5}>
               <Spinner
                 thickness="4px"
                 speed="0.65s"
@@ -169,7 +166,9 @@ const Dashboard = (props) => {
             />
           </Switch>
         </Suspense>
-        {/* <Chart /> */}
+        <Route path="/" exact>
+          <Chart />
+        </Route>
       </Grid>
     </Layout>
   );

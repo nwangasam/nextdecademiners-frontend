@@ -123,7 +123,7 @@ const Crypto = ({ user, deposits, withdrawals, totalBalance: totalBal }) => {
                       color="rgb(152, 161, 178)"
                       fontWeight="500"
                     >
-                      {`0.00${c.symbol}`}
+                      {`${c.symbol}`}
                     </Text>
                   </Flex>
                 </Flex>

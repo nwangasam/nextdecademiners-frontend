@@ -12,7 +12,7 @@ const Layout = (props) => {
   }
 
   const mainSettings = {
-    mt: '7.5rem',
+    mt: { base: '7.5rem', lg: '4.5rem'},
     p: { base: '2rem 1rem', md: '2rem 1rem' }
   }
 
