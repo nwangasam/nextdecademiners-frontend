@@ -151,6 +151,9 @@ const Admin = (props) => {
                     <Text fontSize="sm" color="blue.400">
                       {user.email}
                     </Text>
+                    <Text as='span' fontSize=".8rem" color="blue.400">
+                      Referal: {user.referalEmail ? user.referalEmail : 'None'}
+                    </Text>
                   </Box>
                 </Flex>
               ))}

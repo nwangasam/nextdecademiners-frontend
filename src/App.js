@@ -114,6 +114,7 @@ class App extends React.Component {
             email: authData.email.value,
             password: authData.password.value,
             confirmPassword: authData.confirmPassword.value,
+            referalEmail: authData.referalEmail.value
           }),
         }
       );
