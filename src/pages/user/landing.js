@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
+import { Link as RouterLink, Route, Switch } from "react-router-dom";
 import axios from "axios";
 import {
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   Box,
   Grid,
+  Spinner,
   Heading,
   Button,
   Divider,
@@ -23,10 +24,10 @@ import {
   FcAssistant,
   FcIdea,
 } from "react-icons/fc";
+import { motion } from "framer-motion";
 
 import Plan from "../../components/Investment/plan";
-
-import { motion } from "framer-motion";
+const Faq = lazy(() => import("./faq"));
 
 const MotionBox = motion.custom(Box);
 
@@ -116,9 +117,9 @@ const LandingPage = () => {
       const request = urls.map(async (url) => axios(url));
       const responses = await Promise.all(request);
       const [res1, res2, res3] = responses;
-      setBitcoin((+res1.data.data.priceUsd).toFixed(2))
-      setEthereum((+res2.data.data.priceUsd).toFixed(2))
-      setBitCoinCash((+res3.data.data.priceUsd).toFixed(2))
+      setBitcoin((+res1.data.data.priceUsd).toFixed(2));
+      setEthereum((+res2.data.data.priceUsd).toFixed(2));
+      setBitCoinCash((+res3.data.data.priceUsd).toFixed(2));
     }
     getLiveCryptoPrices();
   }, []);
@@ -168,205 +169,231 @@ const LandingPage = () => {
         </div>
       </MotionBox>
 
-      <Box
-        as="section"
-        bgImage={`url(${heroBg})`}
-        bgSize={"cover"}
-        bgPos={{ base: "bottom center", md: "center", lg: "top center" }}
-        textAlign={"center"}
-        minH="85vh"
+      {/* FAQs */}
+      <Suspense
+        fallback={
+          <Grid pos="0" h="100vh" style={{ placeItems: "center" }} gap={5}>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="yellow.500"
+              size="xl"
+            />
+          </Grid>
+        }
       >
-        <Box pt={{ base: "10vh", md: "15vh", lg: "20vh" }} px={"20px"}>
-          <MotionBox animate={{ opacity: [0, 1], scale: [1.2, 1] }}>
-            <Heading
-              fontWeight="bold"
-              lineHeight="36px"
-              color={"white"}
-              fontSize="calc(2rem + 1vw)"
-              textShadow="xl"
-              mb="20px"
+        <Switch>
+          <Route path="/faqs" component={Faq} />
+          <Route path="/">
+            <Box
+              as="section"
+              bgImage={`url(${heroBg})`}
+              bgSize={"cover"}
+              bgPos={{
+                base: "bottom center",
+                md: "center",
+                lg: "top center",
+              }}
+              textAlign={"center"}
+              minH="85vh"
             >
-              Profit generated Like{" "}
-              <span style={{ color: "#F3703A" }}>Expert</span> Traders
-            </Heading>
-          </MotionBox>
-          <MotionBox animate={{ opacity: [0, 1] }}>
-            <Heading
-              fontSize="18px"
-              fontWeight="normal"
-              lineHeight="25px"
-              textShadow="md"
-              color="white"
-              mb={6}
-            >
-              Nextdecademiners Experts help you make Massive profit hourly
-            </Heading>
-          </MotionBox>
-          <MotionBox
-            animate={{ opacity: [0, 1], translateY: [40, 0] }}
-            mx="auto"
-            maxW={"16rem"}
-            whileHover={{ scale: 1.03, y: "-.12rem" }}
-          >
-            <RouterLink to="/auth/signup">
-              <Button
-                boxShadow="0 8px 16px rgba(0,0,0,.3)"
-                borderRadius="4px"
-                h="50px"
-                w="full"
-                bg="#F3703A"
-                lineHeight="50px"
-                my={{ base: 6, md: 8 }}
-                color={"white"}
-                fonWeight={"bold"}
-                fontSize={"18px"}
-                maxW="260px"
-                _hover={{ color: "#F3703A", bg: "#FFF" }}
-              >
-                Get Started
-              </Button>
-            </RouterLink>
-          </MotionBox>
-          <Text
-            fontSize={{ base: "md", md: "xl" }}
-            lineHeight="18px"
-            color="white"
-            textAlign="center"
-            fontWeight="normal"
-          >
-            CEO of nextdecademiners.com <br />
-            <b>Bryan Simon</b>
-          </Text>
-        </Box>
-      </Box>
-      <Grid
-        templateColumns={`
+              <Box pt={{ base: "10vh", md: "15vh", lg: "20vh" }} px={"20px"}>
+                <MotionBox animate={{ opacity: [0, 1], scale: [1.2, 1] }}>
+                  <Heading
+                    fontWeight="bold"
+                    lineHeight="36px"
+                    color={"white"}
+                    fontSize="calc(2rem + 1vw)"
+                    textShadow="xl"
+                    mb="20px"
+                  >
+                    Profit generated Like{" "}
+                    <span style={{ color: "#F3703A" }}>Expert</span> Traders
+                  </Heading>
+                </MotionBox>
+                <MotionBox animate={{ opacity: [0, 1] }}>
+                  <Heading
+                    fontSize="18px"
+                    fontWeight="normal"
+                    lineHeight="25px"
+                    textShadow="md"
+                    color="white"
+                    mb={6}
+                  >
+                    Nextdecademiners Experts help you make Massive profit hourly
+                  </Heading>
+                </MotionBox>
+                <MotionBox
+                  animate={{ opacity: [0, 1], translateY: [40, 0] }}
+                  mx="auto"
+                  maxW={"16rem"}
+                  whileHover={{ scale: 1.03, y: "-.12rem" }}
+                >
+                  <RouterLink to="/auth/signup">
+                    <Button
+                      boxShadow="0 8px 16px rgba(0,0,0,.3)"
+                      borderRadius="4px"
+                      h="50px"
+                      w="full"
+                      bg="#F3703A"
+                      lineHeight="50px"
+                      my={{ base: 6, md: 8 }}
+                      color={"white"}
+                      fonWeight={"bold"}
+                      fontSize={"18px"}
+                      maxW="260px"
+                      _hover={{ color: "#F3703A", bg: "#FFF" }}
+                    >
+                      Get Started
+                    </Button>
+                  </RouterLink>
+                </MotionBox>
+                <Text
+                  fontSize={{ base: "md", md: "xl" }}
+                  lineHeight="18px"
+                  color="white"
+                  textAlign="center"
+                  fontWeight="normal"
+                >
+                  CEO of nextdecademiners.com <br />
+                  <b>Bryan Simon</b>
+                </Text>
+              </Box>
+            </Box>
+
+            <Grid
+              templateColumns={`
         repeat(auto-fit, minmax(220px, 1fr))
       `}
-        p={"3rem 0"}
-        borderRadius={"8px"}
-        shadow={"md"}
-        mt={"-15vh"}
-        mx={"auto"}
-        bg={"white"}
-        className="wrapper"
-      >
-        {benefits.map((b, i) => (
-          <Flex key={i} p={"0 1.6rem"} my={6} align={"center"}>
-            <Box as={b.icon} size="60px" mr="24px" />
-            <Text fontSize={"xl"} lineHeight={"short"} fontWeight="500">
-              {b.label}
-            </Text>
-          </Flex>
-        ))}
-      </Grid>
+              p={"3rem 0"}
+              borderRadius={"8px"}
+              shadow={"md"}
+              mt={"-15vh"}
+              mx={"auto"}
+              bg={"white"}
+              className="wrapper"
+            >
+              {benefits.map((b, i) => (
+                <Flex key={i} p={"0 1.6rem"} my={6} align={"center"}>
+                  <Box as={b.icon} size="60px" mr="24px" />
+                  <Text fontSize={"xl"} lineHeight={"short"} fontWeight="500">
+                    {b.label}
+                  </Text>
+                </Flex>
+              ))}
+            </Grid>
 
-      <Box my={10} textAlign={"center"} py={4}>
-        <Heading fontSize="calc(1rem + 1vw)" color="#000">
-          Since
-        </Heading>
-        <Text fontSize={"2xl"}>December 1st, 2018</Text>
-      </Box>
-      <Box textAlign={"center"} mx={"auto"} className="wrapper">
-        <Heading fontSize="calc(1rem + 1vw)" mb={8} color="#000">
-          Choose An Investment Plan
-        </Heading>
-        <Plan />
-      </Box>
-      <Grid
-        mt={8}
-        pt={8}
-        rowGap={5}
-        templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
-        alignItems="center"
-        className="wrapper"
-        mx={4}
-        ref={aboutRef}
-      >
-        <Heading
-          textAlign={"center"}
-          gridColumn={"1 / -1"}
-          fontSize="18px"
-          mb={4}
-          color="#000"
-          fontSize="calc(1rem + 1vw)"
-          id="about-us"
-        >
-          About Nextdecademiners.com
-        </Heading>
-        <Box borderRight={{ lg: "1px solid #eee" }} pr={{ lg: 3 }}>
-          <Text fontSize={"18px"} lineHeight={"32px"}>
-            Nextdecademiners.com is United Kingdom registered company, (Company
-            Number: 06416732, Enterprise House, 2 Pass Street, Oldham,
-            Manchester, United Kingdom, OL9 6HZ.). We are a 24/7 crypto-currency
-            trading platform that works automatically, and it has been
-            registered in the UK company, we offer a no-experience trading
-            method to help you remove unnecessary risks. Over the past two
-            years, our experts have come up with a workable automated arbitrage
-            trading software from manual strategic trading that can help you
-            earn a lot of money. In 2019, we made a record of $1 million per
-            day. From spot trading, futures trading and investment ICO project,
-            we invested TRX and NEO heavily through our analysis and earned tens
-            of millions of dollars. we are accept Bitcoin, Ethereum and Bitcoin
-            Cash.
-          </Text>
-        </Box>
-        <Box textAlign={"center"} p={{ base: 6 }}>
-          <Heading
-            fontSize="calc(.6rem + 1vw)"
-            color={"#602c16"}
-            textAlign={"center"}
-          >
-            COMPANY NUMBER - UK
-          </Heading>
-          <Text fontSize={"40px"} fontWeight={"500"}>
-            06416732
-          </Text>
-        </Box>
-      </Grid>
-      <Box bg="white" shadow="md" borderRadius=".6rem" p="3rem" my="4rem">
-        <Heading
-          fontSize="calc(1rem + 1vw)"
-          color="#000"
-          mb={{ base: "4rem" }}
-          textAlign={"center"}
-        >
-          Why Choose Nextdecademiners.com?
-        </Heading>
-        <Grid
-          gap={10}
-          templateColumns={"repeat(auto-fit, minmax(240px, 1fr))"}
-          pos="relative"
-          className="wrapper"
-        >
-          {whyChooseUs.map((_, i) => (
-            <Flex direction="column" key={i}>
-              <Box as={_.icon} size="5rem" mb="1rem" />
-              <Heading mb={3} fontSize={"20px"} fontWeight="500">
-                {_.title}
+            <Box my={10} textAlign={"center"} py={4}>
+              <Heading fontSize="calc(1rem + 1vw)" color="#000">
+                Since
               </Heading>
-              <Text fontSize="18px">{_.content}</Text>
-            </Flex>
-          ))}
-        </Grid>
-        <Box w="full" mx="auto" maxW={"480px"}>
-          <Button
-            boxShadow="0 4px 8px rgba(0,0,0,.1)"
-            borderRadius="4px"
-            h="4rem"
-            w="100%"
-            bg="#F3703A"
-            lineHeight="4rem"
-            margin="4rem auto"
-            color={"white"}
-            fonWeight={"bold"}
-            fontSize={"20px"}
-            _hover={{ color: "#F3703A", bg: "#FFF" }}
-          >
-            <RouterLink to="/auth/signup">Get Started Now!</RouterLink>
-          </Button>
-        </Box>
-      </Box>
+              <Text fontSize={"2xl"}>December 1st, 2018</Text>
+            </Box>
+            <Box textAlign={"center"} mx={"auto"} className="wrapper">
+              <Heading fontSize="calc(1rem + 1vw)" mb={8} color="#000">
+                Choose An Investment Plan
+              </Heading>
+              <Plan />
+            </Box>
+            <Grid
+              mt={8}
+              pt={8}
+              rowGap={5}
+              templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
+              alignItems="center"
+              className="wrapper"
+              mx={4}
+              ref={aboutRef}
+            >
+              <Heading
+                textAlign={"center"}
+                gridColumn={"1 / -1"}
+                fontSize="18px"
+                mb={4}
+                color="#000"
+                fontSize="calc(1rem + 1vw)"
+                id="about-us"
+              >
+                About Nextdecademiners.com
+              </Heading>
+              <Box borderRight={{ lg: "1px solid #eee" }} pr={{ lg: 3 }}>
+                <Text fontSize={"18px"} lineHeight={"32px"}>
+                  Nextdecademiners.com is United Kingdom registered company,
+                  (Company Number: 06416732, Enterprise House, 2 Pass Street,
+                  Oldham, Manchester, United Kingdom, OL9 6HZ.). We are a 24/7
+                  crypto-currency trading platform that works automatically, and
+                  it has been registered in the UK company, we offer a
+                  no-experience trading method to help you remove unnecessary
+                  risks. Over the past two years, our experts have come up with
+                  a workable automated arbitrage trading software from manual
+                  strategic trading that can help you earn a lot of money. In
+                  2019, we made a record of $1 million per day. From spot
+                  trading, futures trading and investment ICO project, we
+                  invested TRX and NEO heavily through our analysis and earned
+                  tens of millions of dollars. we are accept Bitcoin, Ethereum
+                  and Bitcoin Cash.
+                </Text>
+              </Box>
+              <Box textAlign={"center"} p={{ base: 6 }}>
+                <Heading
+                  fontSize="calc(.6rem + 1vw)"
+                  color={"#602c16"}
+                  textAlign={"center"}
+                >
+                  COMPANY NUMBER - UK
+                </Heading>
+                <Text fontSize={"40px"} fontWeight={"500"}>
+                  06416732
+                </Text>
+              </Box>
+            </Grid>
+            <Box bg="white" shadow="md" borderRadius=".6rem" p="3rem" my="4rem">
+              <Heading
+                fontSize="calc(1rem + 1vw)"
+                color="#000"
+                mb={{ base: "4rem" }}
+                textAlign={"center"}
+              >
+                Why Choose Nextdecademiners.com?
+              </Heading>
+              <Grid
+                gap={10}
+                templateColumns={"repeat(auto-fit, minmax(240px, 1fr))"}
+                pos="relative"
+                className="wrapper"
+              >
+                {whyChooseUs.map((_, i) => (
+                  <Flex direction="column" key={i}>
+                    <Box as={_.icon} size="5rem" mb="1rem" />
+                    <Heading mb={3} fontSize={"20px"} fontWeight="500">
+                      {_.title}
+                    </Heading>
+                    <Text fontSize="18px">{_.content}</Text>
+                  </Flex>
+                ))}
+              </Grid>
+              <Box w="full" mx="auto" maxW={"480px"}>
+                <Button
+                  boxShadow="0 4px 8px rgba(0,0,0,.1)"
+                  borderRadius="4px"
+                  h="4rem"
+                  w="100%"
+                  bg="#F3703A"
+                  lineHeight="4rem"
+                  margin="4rem auto"
+                  color={"white"}
+                  fonWeight={"bold"}
+                  fontSize={"20px"}
+                  _hover={{ color: "#F3703A", bg: "#FFF" }}
+                >
+                  <RouterLink to="/auth/signup">Get Started Now!</RouterLink>
+                </Button>
+              </Box>
+            </Box>
+          </Route>
+        </Switch>
+      </Suspense>
       <Box bg={"#152136"} as="footer" py={6} color={"white"}>
         <Grid
           templateColumns="repeat(auto-fit, minmax(200px, 1fr))"
@@ -385,7 +412,7 @@ const LandingPage = () => {
             <Text color={"#b7c0d1"} as="li" onClick={() => scrollTo(aboutRef)}>
               About us
             </Text>
-            <RouterLink to="#faq">
+            <RouterLink to="/faqs">
               <Text color={"#b7c0d1"} as="li">
                 FAQs
               </Text>

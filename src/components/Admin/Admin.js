@@ -10,6 +10,7 @@ import {
   Box,
   Heading,
   Text,
+  Skeleton,
   Button,
   Avatar,
   Badge,
@@ -52,7 +53,6 @@ const Admin = (props) => {
 
   const [withdrawals, setWithdrawals] = useState();
   const [totalWithdrawals, setTotalWithdrawals] = useState();
-
 
   const requestOption = {
     method: "get",
@@ -122,41 +122,64 @@ const Admin = (props) => {
 
   return (
     <Box gridColumn={{ lg: "2 / 3" }}>
-      <Heading fontWeight="normal" mb={4}>
-        {totalUsers} users registered
-      </Heading>
+      <Skeleton isLoaded={users}>
+        <Heading fontWeight="normal" mb={4} borderRadius={"40px"}>
+          {totalUsers} users registered
+        </Heading>
+      </Skeleton>
       <Tabs variant="soft-rounded" variantColor="green" mt={{ lg: 5 }}>
         <TabList mb="1em">
           {stats.map((stat, i) => {
             return (
-              <Tab key={stat.id} outline="none" key={i}>
-                {stat.text}
+              <Tab outline="none" key={stat.id}>
+                <Skeleton isLoaded={users}>{stat.text}</Skeleton>
               </Tab>
             );
           })}
         </TabList>
         <TabPanels as="ul">
           <TabPanel>
-            {users &&
-              users.map((user, i) => (
-                <Flex key={user._id} my={5}>
-                  <Avatar name={user.name} />
-                  <Box ml="3">
-                    <Text fontWeight="bold">
-                      {user.name}
-                      <Badge ml="1" variantColor="green">
-                        {moment(user.createdAt).fromNow().toString()}
-                      </Badge>
-                    </Text>
-                    <Text fontSize="sm" color="blue.400">
-                      {user.email}
-                    </Text>
-                    <Text as='span' fontSize=".8rem" color="blue.400">
-                      Referal: {user.referalEmail ? user.referalEmail : 'None'}
-                    </Text>
-                  </Box>
-                </Flex>
-              ))}
+            <Skeleton isLoaded={users}>
+              {users &&
+                users.map((user, i) => (
+                  <Flex key={user._id} my={5}>
+                    <Avatar name={user.name} />
+                    <Box ml="3">
+                      <Text fontWeight="bold">
+                        {user.name}
+                        <Badge ml="1" variantColor="green">
+                          {moment(user.createdAt).fromNow().toString()}
+                        </Badge>
+                      </Text>
+                      <Text fontSize="sm" color="blue.400">
+                        {user.email}
+                      </Text>
+                      <Text as="span" fontSize=".8rem" color="blue.400">
+                        Referal:{" "}
+                        {user.referalEmail ? user.referalEmail : "None"}
+                      </Text>
+                    </Box>
+                  </Flex>
+                ))}
+              <Skeleton
+                isLoaded={users}
+                margin="20px 0"
+                borderRadius={"40px"}
+                h="70px"
+              />
+              <Skeleton
+                isLoaded={users}
+                margin="20px 0"
+                borderRadius={"40px"}
+                h="70px"
+              />
+              <Skeleton
+                isLoaded={users}
+                margin="20px 0"
+                borderRadius={"40px"}
+                h="70px"
+              />
+            </Skeleton>
           </TabPanel>
           <TabPanel>
             {deposits &&

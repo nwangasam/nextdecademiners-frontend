@@ -150,28 +150,8 @@ class App extends React.Component {
     let routes = (
       <Switch>
         <Route
-          path="/"
-          exact
-          render={(props) => (
-            <Suspense
-              fallback={
-                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
-                  <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
-                  />
-                </Grid>
-              }
-            >
-              <LandingPage {...props} />
-            </Suspense>
-          )}
-        />
-        <Route
           path="/auth/signup"
+          exact
           render={(props) => (
             <Suspense
               fallback={
@@ -198,6 +178,7 @@ class App extends React.Component {
         />
         <Route
           path="/auth/login"
+          exact
           render={(props) => (
             <Suspense
               fallback={
@@ -222,7 +203,28 @@ class App extends React.Component {
             </Suspense>
           )}
         />
-        <Redirect to='/' />
+        <Redirect from='/auth/login' to='/' />
+        <Redirect from='/auth/signup' to='/' />
+        <Route
+          path="/"
+          render={(props) => (
+            <Suspense
+              fallback={
+                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                </Grid>
+              }
+            >
+              <LandingPage {...props} />
+            </Suspense>
+          )}
+        />
       </Switch>
     );
 
