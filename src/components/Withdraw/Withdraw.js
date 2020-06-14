@@ -62,9 +62,12 @@ const Withdraw = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const cancelRef = useRef();
+  const [loading, setLoading] = useState(false);
 
   const handleWithdrawal = () => {
     onClose();
+    if (!props.user._id) return;
+    setLoading(true);
     fetch("https://nextdecademiners.herokuapp.com/user/withdraw", {
       method: "POST",
       headers: {
@@ -81,9 +84,13 @@ const Withdraw = (props) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result.withdraw);
+        setLoading(false);
         props.history.replace("/");
-      });
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err);
+      })
   };
 
   return (
@@ -174,9 +181,11 @@ const Withdraw = (props) => {
           my={5}
           bg="red.100"
           color="red.600"
+          loadingText="Sending request..."
+          isLoading={loading}
           onClick={onOpen}
           isDisabled={
-            +amount <= props.user.balance[currencyId] && address && amount
+            +amount <= props.user.balance[currencyId] && address && amount || loading
               ? false
               : true
           }

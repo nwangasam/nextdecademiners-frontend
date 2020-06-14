@@ -54,7 +54,7 @@ const crypto = {
   },
   plans: [
     "1.4% Profit in 24 hrs",
-    "4% Profit in 65 min",
+    "4% Profit in 1 min",
     "10% Profit in 24 hrs",
     "15% Profit in 7 days",
   ],
@@ -72,10 +72,12 @@ const Deposit = (props) => {
   const [amount, setAmount] = useState();
 
   const inputChangeHandler = (e, cb) => cb(e.target.value);
+  const [loading, setLoading] = useState(false);
 
   const handleDeposit = () => {
     onClose();
     if (!props.user._id) return;
+    setLoading(true);
     fetch("https://nextdecademiners.herokuapp.com/user/deposit", {
       method: "POST",
       headers: {
@@ -93,8 +95,10 @@ const Deposit = (props) => {
       .then((res) => res.json())
       .then((result) => {
         props.history.replace("/");
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -182,21 +186,6 @@ const Deposit = (props) => {
               />
             </InputGroup>
           </Flex>
-          {/* <Text fontSize="20px" fontWeight="600" color="gray.400" mr={1}>
-            =
-          </Text>
-          <Flex flex="1">
-            <InputGroup size="lg" m={0}>
-              <Input placeholder={`0.00${crypto[currencyId].symb}`} />
-              <InputRightElement
-                children={
-                  <Text fontSize="14px" fontWeight="500" color="gray.300">
-                    {crypto[currencyId].symb}
-                  </Text>
-                }
-              />
-            </InputGroup>
-          </Flex> */}
         </Flex>
       </Stack>
 
@@ -231,6 +220,8 @@ const Deposit = (props) => {
           bg="green.100"
           color="green.600"
           ref={btnRef}
+          isDisabled={loading}
+          loadingText="Sending request..."
           onClick={onOpen}
         >
           SAVE &amp; Make Deposit Request
