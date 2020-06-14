@@ -221,6 +221,7 @@ const Deposit = (props) => {
           color="green.600"
           ref={btnRef}
           isDisabled={loading}
+          isLoading={loading}
           loadingText="Sending request..."
           onClick={onOpen}
         >
