@@ -54,6 +54,8 @@ const Admin = (props) => {
   const [withdrawals, setWithdrawals] = useState();
   const [totalWithdrawals, setTotalWithdrawals] = useState();
 
+  const [loading, setLoading] = useState(false);
+
   const requestOption = {
     method: "get",
     headers: {
@@ -92,6 +94,7 @@ const Admin = (props) => {
 
   function confirmDepositHandler(e, depositData) {
     if (!depositData._id) return;
+    setLoading(true);
     fetch(`https://nextdecademiners.herokuapp.com/admin/deposit`, {
       method: "POST",
       headers: requestOption.headers,
@@ -99,13 +102,18 @@ const Admin = (props) => {
     })
       .then((res) => res.json())
       .then((result) => {
+        setLoading(false);
         props.history.replace("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }
 
   function confirmWithdrawalHandler(e, withdrawal) {
     if (!withdrawal._id) return;
+    setLoading(true);
     fetch(`https://nextdecademiners.herokuapp.com/admin/withdraw`, {
       method: "POST",
       headers: requestOption.headers,
@@ -113,9 +121,13 @@ const Admin = (props) => {
     })
       .then((res) => res.json())
       .then((result) => {
+        setLoading(false);
         props.history.replace("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }
 
   const { isOpen, onToggle } = useDisclosure();
@@ -220,7 +232,7 @@ const Admin = (props) => {
                       visibility={isOpen ? "visible" : "hidden"}
                       transition={"opacity .28s ease-out"}
                       pointerEvents={
-                        deposit.status === "confirmed" ? "none" : "all"
+                       loading || deposit.status === "confirmed" ? "none" : "all"
                       }
                     >
                       <Button
@@ -231,7 +243,8 @@ const Admin = (props) => {
                         }
                         ml="auto"
                         px={2}
-                        isDisabled={deposit.status === "confirmed"}
+                        isLoading={loading}
+                        isDisabled={loading || deposit.status === "confirmed"}
                         cursor={
                           deposit.status === "confirmed"
                             ? "not-allowed"
@@ -243,11 +256,12 @@ const Admin = (props) => {
                           : "Confirm Request"}
                       </Button>
                       <IconButton
-                        isDisabled={deposit.status === "confirmed"}
+                        isDisabled={loading || deposit.status === "confirmed"}
                         d={{ base: "flex", lg: "none" }}
                         variantColor={
                           deposit.status === "confirmed" ? "green" : "blue"
                         }
+                        isLoading={loading}
                         ml="auto"
                         cursor={
                           deposit.status === "confirmed"
@@ -312,7 +326,7 @@ const Admin = (props) => {
                       visibility={isOpen ? "visible" : "hidden"}
                       transition={"opacity .28s ease-out"}
                       pointerEvents={
-                        withdraw.status === "confirmed" ? "none" : "all"
+                        loading || withdraw.status === "confirmed" ? "none" : "all"
                       }
                     >
                       <Button
@@ -321,9 +335,10 @@ const Admin = (props) => {
                         variantColor={
                           withdraw.status === "confirmed" ? "green" : "blue"
                         }
+                        isLoading={loading}
                         ml="auto"
                         px={2}
-                        isDisabled={withdraw.status === "confirmed"}
+                        isDisabled={loading || withdraw.status === "confirmed"}
                         cursor={
                           withdraw.status === "confirmed"
                             ? "not-allowed"
@@ -335,7 +350,8 @@ const Admin = (props) => {
                           : "Confirm Request"}
                       </Button>
                       <IconButton
-                        isDisabled={withdraw.status === "confirmed"}
+                        isLoading={loading}
+                        isDisabled={loading || withdraw.status === "confirmed"}
                         d={{ base: "flex", lg: "none" }}
                         variantColor={
                           withdraw.status === "confirmed" ? "green" : "blue"
