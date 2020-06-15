@@ -54,7 +54,7 @@ const crypto = {
   },
   plans: [
     "1.4% Profit in 24 hrs",
-    "4% Profit in 1 min",
+    "4% Profit in 65 min",
     "10% Profit in 24 hrs",
     "15% Profit in 7 days",
   ],
