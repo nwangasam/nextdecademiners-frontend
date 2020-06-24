@@ -15,7 +15,10 @@ import {
 } from '@chakra-ui/core';
 
 import heroBg from '../../assets/images/bg.png';
+import heroBgLg from '../../assets/images/bg-lg.png';
 import logoSrc from '../../assets/images/logo.png';
+import certificateSrc from '../../assets/images/certificate.png';
+
 import {
   FcComboChart,
   FcManager,
@@ -64,15 +67,16 @@ const stagger = {
 const fadeInUp = {
   initial: {
     opacity: 0,
-    scale: 1.1,
-    y: 60,
+    y: 80,
   },
   animate: {
     opacity: 1,
-    scale: 1,
     y: 0,
     transition: {
-      delay: 1
+      type: 'spring',
+      duration: 0.7,
+      stiffness: 260,
+      damping: 20
     }
   },
 };
@@ -107,14 +111,14 @@ const LandingPage = () => {
           mb='-1px'
           color={'#c2c9d5'}
           fontWeight='normal'
-          fontSize={{ base: '.95rem', lg: '1.05rem' }}
+          fontSize={{ base: '.8rem', lg: '1rem' }}
           whiteSpace='nowrap'
         >
           {c.label}
         </Text>
         <Text
           color={'white'}
-          fontSize={{ base: '.95rem', lg: '1.05rem' }}
+          fontSize={{ base: '.85rem', lg: '1rem' }}
           fontWeight={'500'}
         >
           {c.id === 'bitcoin' && bitcoin && `$${bitcoin}`}
@@ -173,7 +177,7 @@ const LandingPage = () => {
 
   return (
     <Box bg={'#F9F9F9'} minH='100vh' ref={homeRef}>
-      <Box as='header' bg='#152136' p={'1.2rem 0'}>
+      <Box as='header' bg='#152136' p={'1rem 0'}>
         <div className='wrapper'>
           <Flex padding={'0'} as='nav' justify={'space-between'} align='center'>
             <Box size={{ lg: '25%' }}>
@@ -235,7 +239,7 @@ const LandingPage = () => {
           <Route path='/'>
             <Box
               as='section'
-              bgImage={`url(${heroBg})`}
+              bgImage={{ base: `url(${heroBg})`, md: `url(${heroBgLg})` }}
               bgSize={'cover'}
               bgPos={{
                 base: 'bottom center',
@@ -248,7 +252,7 @@ const LandingPage = () => {
               <MotionBox
                 pt={{ base: '10vh', md: '15vh', lg: '20vh' }}
                 px={'20px'}
-                maxW="600px"
+                maxW='600px'
                 margin='0 auto'
                 variants={stagger}
                 initial='initial'
@@ -397,6 +401,9 @@ const LandingPage = () => {
                 </Text>
               </Box>
             </Grid>
+            <Box py='4rem' mx='auto' bg='#152136'>
+              <Image w='full' maxW='400px' mx='auto' src={certificateSrc} alt='Nextdecademiners company certificate' />
+            </Box>
             <Box bg='white' shadow='md' borderRadius='.6rem' p='3rem' my='4rem'>
               <Heading
                 fontSize='calc(1rem + 1vw)'
