@@ -157,14 +157,13 @@ const LandingPage = () => {
     },
   ];
 
-  const urls = [
-    'https://api.coincap.io/v2/assets/bitcoin',
-    'https://api.coincap.io/v2/assets/ethereum',
-    'https://api.coincap.io/v2/assets/bitcoin-cash',
-  ];
-
   useEffect(() => {
     async function getLiveCryptoPrices() {
+      const urls = [
+        'https://api.coincap.io/v2/assets/bitcoin',
+        'https://api.coincap.io/v2/assets/ethereum',
+        'https://api.coincap.io/v2/assets/bitcoin-cash',
+      ];
       const request = urls.map(async (url) => axios(url));
       const responses = await Promise.all(request);
       const [res1, res2, res3] = responses;
@@ -173,7 +172,7 @@ const LandingPage = () => {
       setBitCoinCash((+res3.data.data.priceUsd).toFixed(2));
     }
     getLiveCryptoPrices();
-  }, [urls]);
+  }, []);
 
   return (
     <Box bg={'#F9F9F9'} minH='100vh' ref={homeRef}>

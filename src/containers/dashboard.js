@@ -40,21 +40,23 @@ const Dashboard = (props) => {
     }).format(Number(total));
   };
 
-  const urls = [
-    "https://nextdecademiners.herokuapp.com/user/profile",
-    "https://nextdecademiners.herokuapp.com/user/deposits",
-    "https://nextdecademiners.herokuapp.com/user/withdrawals",
-  ];
-
-  const requestOption = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${props.token}`,
-    },
-  };
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
+      const urls = [
+        "https://nextdecademiners.herokuapp.com/user/profile",
+        "https://nextdecademiners.herokuapp.com/user/deposits",
+        "https://nextdecademiners.herokuapp.com/user/withdrawals",
+      ];
+    
+      const requestOption = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${props.token}`,
+        },
+      };
+      
       const requests = urls.map((url) => axios(url, requestOption));
       try {
         const response = await Promise.all(requests);
@@ -67,7 +69,7 @@ const Dashboard = (props) => {
       }
     };
     fetchUserData();
-  }, []);
+  }, [props.token]);
 
   return (
     <Layout

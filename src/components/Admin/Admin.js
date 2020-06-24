@@ -56,22 +56,23 @@ const Admin = (props) => {
 
   const [loading, setLoading] = useState(false);
 
-  const requestOption = {
-    method: "get",
-    headers: {
-      Authorization: `Bearer ${props.token}`,
-      "Content-Type": "application/json",
-    },
-  };
-
-  const urls = [
-    "https://nextdecademiners.herokuapp.com/admin/users",
-    "https://nextdecademiners.herokuapp.com/admin/deposits",
-    "https://nextdecademiners.herokuapp.com/admin/withdrawals",
-  ];
 
   useEffect(() => {
     async function fetchData() {
+      const requestOption = {
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${props.token}`,
+          "Content-Type": "application/json",
+        },
+      };
+    
+      const urls = [
+        "https://nextdecademiners.herokuapp.com/admin/users",
+        "https://nextdecademiners.herokuapp.com/admin/deposits",
+        "https://nextdecademiners.herokuapp.com/admin/withdrawals",
+      ];
+      
       let requests = urls.map((url) => axios(url, requestOption));
 
       let response = await Promise.all(requests);
@@ -90,9 +91,16 @@ const Admin = (props) => {
       // setTotalWithdrawals(totalWithdrawals);
     }
     fetchData();
-  }, []);
+  }, [props.token]);
 
   function confirmDepositHandler(e, depositData) {
+    const requestOption = {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+        "Content-Type": "application/json",
+      },
+    };
     if (!depositData._id) return;
     setLoading(true);
     fetch(`https://nextdecademiners.herokuapp.com/admin/deposit`, {
@@ -116,7 +124,10 @@ const Admin = (props) => {
     setLoading(true);
     fetch(`https://nextdecademiners.herokuapp.com/admin/withdraw`, {
       method: "POST",
-      headers: requestOption.headers,
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(withdrawal),
     })
       .then((res) => res.json())
