@@ -12,7 +12,6 @@ import {
   Divider,
   InputLeftAddon,
   InputRightElement,
-  InputLeftElement,
   Stack,
   FormHelperText,
   Button,

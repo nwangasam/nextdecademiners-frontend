@@ -67,7 +67,7 @@ const Dashboard = (props) => {
       }
     };
     fetchUserData(requestOption, urls);
-  }, []);
+  }, [requestOption, urls]);
 
   return (
     <Layout

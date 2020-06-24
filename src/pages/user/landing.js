@@ -123,7 +123,7 @@ const LandingPage = () => {
       setBitCoinCash((+res3.data.data.priceUsd).toFixed(2));
     }
     getLiveCryptoPrices();
-  }, []);
+  }, [urls]);
 
   return (
     <Box bg={'#F9F9F9'} minH='100vh' ref={homeRef}>
@@ -318,7 +318,6 @@ const LandingPage = () => {
               <Heading
                 textAlign={'center'}
                 gridColumn={'1 / -1'}
-                fontSize='18px'
                 mb={4}
                 color='#000'
                 fontSize='calc(1rem + 1vw)'

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 
@@ -49,10 +49,10 @@ const Admin = (props) => {
   const [totalUsers, setTotalUsers] = useState(0);
 
   const [deposits, setDeposits] = useState();
-  const [totalDeposits, setTotalDeposits] = useState();
+  // const [totalDeposits, setTotalDeposits] = useState();
 
   const [withdrawals, setWithdrawals] = useState();
-  const [totalWithdrawals, setTotalWithdrawals] = useState();
+  // const [totalWithdrawals, setTotalWithdrawals] = useState();
 
   const [loading, setLoading] = useState(false);
 
@@ -77,20 +77,20 @@ const Admin = (props) => {
       let response = await Promise.all(requests);
       const [
         { users, totalUsers },
-        { deposits, totalDeposits },
-        { withdrawals, totalWithdrawals },
+        { deposits },
+        { withdrawals },
       ] = response.map((res) => res.data);
       setUsers(users);
       setTotalUsers(totalUsers);
 
       setDeposits(deposits);
-      setTotalDeposits(totalDeposits);
+      // setTotalDeposits(totalDeposits);
 
       setWithdrawals(withdrawals);
-      setTotalWithdrawals(totalWithdrawals);
+      // setTotalWithdrawals(totalWithdrawals);
     }
     fetchData();
-  }, []);
+  }, [requestOption, urls]);
 
   function confirmDepositHandler(e, depositData) {
     if (!depositData._id) return;
@@ -228,7 +228,7 @@ const Admin = (props) => {
                     </Box>
 
                     <Box
-                      onClick={(e) => (e, confirmDepositHandler(e, deposit))}
+                      onClick={(e) => (confirmDepositHandler(e, deposit))}
                       visibility={isOpen ? "visible" : "hidden"}
                       transition={"opacity .28s ease-out"}
                       pointerEvents={
@@ -320,8 +320,7 @@ const Admin = (props) => {
                     </Box>
 
                     <Box
-                      onClick={(e) => (
-                        e, confirmWithdrawalHandler(e, withdraw)
+                      onClick={(e) => (confirmWithdrawalHandler(e, withdraw)
                       )}
                       visibility={isOpen ? "visible" : "hidden"}
                       transition={"opacity .28s ease-out"}

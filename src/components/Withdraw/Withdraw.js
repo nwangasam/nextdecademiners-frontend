@@ -185,9 +185,9 @@ const Withdraw = (props) => {
           isLoading={loading}
           onClick={onOpen}
           isDisabled={
-            +amount <= props.user.balance[currencyId] && address && amount || loading
-              ? false
-              : true
+            (+amount > props.user.balance[currencyId] && !address && !amount) || loading
+              ? true
+              : false
           }
         >
           {+amount >= props.user.balance[currencyId]

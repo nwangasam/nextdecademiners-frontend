@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import Dashboard from "./containers/dashboard";
-import { Heading, Grid, Spinner } from "@chakra-ui/core";
+import { Grid, Spinner } from "@chakra-ui/core";
 
 import "./App.css";
 
