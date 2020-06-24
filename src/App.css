@@ -6,7 +6,12 @@ html, body {
 body {
   min-height: 100vh;
   max-width: 100%;
+  /* top: 0 !important; */
 }
+
+/* body .skiptranslate:first-of-type {
+   display: none;
+} */
 
 svg {
   width: 22px;
@@ -28,3 +33,16 @@ ul {
     padding: 0;
   }
 }
+
+.skiptranslate {
+  position: relative;
+  bottom: 2.4px;
+  height: 2rem;
+  width: 7.4rem;
+  overflow: hidden;
+}
+
+.goog-te-combo {
+  padding: .3rem;
+  border-radius: 4px;
+} 
