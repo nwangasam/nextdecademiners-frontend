@@ -56,7 +56,7 @@ const stagger = {
   animate: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.3,
+      staggerChildren: 0.4,
     },
   },
 };
@@ -71,6 +71,9 @@ const fadeInUp = {
     opacity: 1,
     scale: 1,
     y: 0,
+    transition: {
+      delay: 1
+    }
   },
 };
 
@@ -245,13 +248,15 @@ const LandingPage = () => {
               <MotionBox
                 pt={{ base: '10vh', md: '15vh', lg: '20vh' }}
                 px={'20px'}
+                maxW="600px"
+                margin='0 auto'
                 variants={stagger}
                 initial='initial'
                 animate='animate'
               >
                 <MotionHeading
                   fontWeight='bold'
-                  lineHeight='36px'
+                  lineHeight='40px'
                   color={'white'}
                   fontSize='calc(2rem + 1vw)'
                   textShadow='xl'
