@@ -454,27 +454,31 @@ const LandingPage = () => {
                 </RouterLink>
               </Box>
             </Box>
-            <Box p={'2rem 1rem'} maxW='540px' mx='auto'>
+            <Grid
+              p={'1.2rem 1rem 2rem'}
+              mx='auto'
+              templateColumns='repeat(auto-fit, minmax(300px, 1fr))'
+              gap='2rem'
+            >
               <Box
                 as='iframe'
-                h='290px'
+                height='51vw'
                 w='full'
                 src='https://www.youtube.com/embed/Um63OQz3bjo'
                 frameborder='0'
                 allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
                 allowfullscreen
-              ></Box>
+                ></Box>
               <Box
-                mt={4}
                 as='iframe'
-                h='290px'
+                height='51vw'
                 w='full'
                 src='https://www.youtube.com/embed/RKBczGEcP10'
                 frameborder='0'
                 allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
                 allowfullscreen
               ></Box>
-            </Box>
+            </Grid>
           </Route>
         </Switch>
       </Suspense>
