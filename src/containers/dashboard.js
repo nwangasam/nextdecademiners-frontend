@@ -54,7 +54,7 @@ const Dashboard = (props) => {
   };
 
   useEffect(() => {
-    const fetchUserData = async (requestOption, urls) => {
+    const fetchUserData = async () => {
       const requests = urls.map((url) => axios(url, requestOption));
       try {
         const response = await Promise.all(requests);
@@ -66,8 +66,8 @@ const Dashboard = (props) => {
         console.log(err);
       }
     };
-    fetchUserData(requestOption, urls);
-  }, [requestOption, urls]);
+    fetchUserData();
+  }, []);
 
   return (
     <Layout

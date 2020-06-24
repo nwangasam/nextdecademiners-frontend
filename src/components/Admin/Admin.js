@@ -90,7 +90,7 @@ const Admin = (props) => {
       // setTotalWithdrawals(totalWithdrawals);
     }
     fetchData();
-  }, [requestOption, urls]);
+  }, []);
 
   function confirmDepositHandler(e, depositData) {
     if (!depositData._id) return;

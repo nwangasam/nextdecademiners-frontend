@@ -342,7 +342,7 @@ const LandingPage = () => {
               <Heading fontSize='calc(1rem + 1vw)' color='#000'>
                 Since
               </Heading>
-              <Text fontSize={'2xl'}>December 1st, 2018</Text>
+              <Text fontSize={'2xl'}>December 1st, 2019</Text>
             </Box>
             <Box textAlign={'center'} mx={'auto'} className='wrapper'>
               <Heading fontSize='calc(1rem + 1vw)' mb={8} color='#000'>
