@@ -31,6 +31,48 @@ import Plan from '../../components/Investment/plan';
 const Faq = lazy(() => import('./faq'));
 
 const MotionBox = motion.custom(Box);
+const MotionFlex = motion.custom(Flex);
+const MotionHeading = motion.custom(Heading);
+const MotionText = motion.custom(Text);
+
+const cryptoVariant = {
+  initial: {
+    opacity: 0,
+    x: 60,
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 260,
+      damping: 20,
+      duration: 0.6,
+    },
+  },
+};
+
+const stagger = {
+  animate: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const fadeInUp = {
+  initial: {
+    opacity: 0,
+    scale: 1.1,
+    y: 60,
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+  },
+};
 
 const LandingPage = () => {
   const aboutRef = useRef(null);
@@ -48,7 +90,7 @@ const LandingPage = () => {
 
   const renderCrypto = crypto.map((c, i) => {
     return (
-      <Box
+      <MotionBox
         flex={'1'}
         key={c.id}
         as='li'
@@ -56,6 +98,7 @@ const LandingPage = () => {
         textAlign='center'
         d={{ lg: 'flex' }}
         flexDirection={{ lg: 'column' }}
+        variants={cryptoVariant}
       >
         <Text
           mb='-1px'
@@ -75,7 +118,7 @@ const LandingPage = () => {
           {c.id === 'ethereum' && ethereum && `$${ethereum}`}
           {c.id === 'bitcoin-cash' && bitcoinCash && `$${bitcoinCash}`}
         </Text>
-      </Box>
+      </MotionBox>
     );
   });
 
@@ -127,20 +170,15 @@ const LandingPage = () => {
 
   return (
     <Box bg={'#F9F9F9'} minH='100vh' ref={homeRef}>
-      <MotionBox
-        as='header'
-        bg='#152136'
-        p={'1.2rem 0'}
-        animate={{ opacity: [0, 1] }}
-        transition={{ ease: 'easeOut', duration: 1 }}
-      >
+      <Box as='header' bg='#152136' p={'1.2rem 0'}>
         <div className='wrapper'>
           <Flex padding={'0'} as='nav' justify={'space-between'} align='center'>
             <Box size={{ lg: '25%' }}>
               <Image src={logoSrc} alt='' size='100%' />
             </Box>
             <Box d={{ base: 'none', lg: 'flex' }}>{renderCrypto}</Box>
-            <div style={{ marginLeft: 'auto', margin: '0 .4rem'}}
+            <div
+              style={{ marginLeft: 'auto' }}
               className='js-ga bklyn-btn-holder bklyn-btn-last bklyn-btn-center button button--primary button--arrow button--mobile-block button--bold ml0 mr0'
               id='google_translate_element'
             >
@@ -148,22 +186,10 @@ const LandingPage = () => {
                 <i className='os-icon os-icon-x'></i>
               </div>
             </div>
-            {/* <Box color={'white'} d={{ base: 'inline-block', lg: 'none' }}>
-              <RouterLink to='/auth/signup'>
-                <Button
-                  size='sm'
-                  variant='outline'
-                  variantColor='orange.400'
-                  color='orange.400'
-                >
-                  Get Started
-                </Button>
-              </RouterLink>
-            </Box> */}
           </Flex>
           <Divider style={{ opacity: '.1' }} d={{ lg: 'none' }} />
           <Box d={{ lg: 'none' }}>
-            <Flex
+            <MotionFlex
               as='ul'
               p='0'
               m='0'
@@ -171,17 +197,25 @@ const LandingPage = () => {
               align='center'
               justify={'space-around'}
               color={'white'}
+              variants={stagger}
+              initial='initial'
+              animate='animate'
             >
               {renderCrypto}
-            </Flex>
+            </MotionFlex>
           </Box>
         </div>
-      </MotionBox>
+      </Box>
 
-      {/* FAQs */}
       <Suspense
         fallback={
-          <Grid pos='0' h='100vh' style={{ placeItems: 'center' }} gap={5}>
+          <Grid
+            pos='0'
+            h='100vh'
+            style={{ placeItems: 'center' }}
+            gap={5}
+            bg='#152136'
+          >
             <Spinner
               thickness='4px'
               speed='0.65s'
@@ -192,6 +226,7 @@ const LandingPage = () => {
           </Grid>
         }
       >
+        {/* FAQs */}
         <Switch>
           <Route path='/faqs' component={Faq} />
           <Route path='/'>
@@ -207,38 +242,38 @@ const LandingPage = () => {
               textAlign={'center'}
               minH='85vh'
             >
-              <Box pt={{ base: '10vh', md: '15vh', lg: '20vh' }} px={'20px'}>
-                <MotionBox animate={{ opacity: [0, 1], scale: [1.2, 1] }}>
-                  <Heading
-                    fontWeight='bold'
-                    lineHeight='36px'
-                    color={'white'}
-                    fontSize='calc(2rem + 1vw)'
-                    textShadow='xl'
-                    mb='20px'
-                  >
-                    Profit generated Like{' '}
-                    <span style={{ color: '#F3703A' }}>Expert</span> Traders
-                  </Heading>
-                </MotionBox>
-                <MotionBox animate={{ opacity: [0, 1] }}>
-                  <Heading
-                    fontSize='18px'
-                    fontWeight='normal'
-                    lineHeight='25px'
-                    textShadow='md'
-                    color='white'
-                    mb={6}
-                  >
-                    Nextdecademiners Experts help you make Massive profit hourly
-                  </Heading>
-                </MotionBox>
-                <MotionBox
-                  animate={{ opacity: [0, 1], translateY: [40, 0] }}
-                  mx='auto'
-                  maxW={'16rem'}
-                  whileHover={{ scale: 1.03, y: '-.12rem' }}
+              <MotionBox
+                pt={{ base: '10vh', md: '15vh', lg: '20vh' }}
+                px={'20px'}
+                variants={stagger}
+                initial='initial'
+                animate='animate'
+              >
+                <MotionHeading
+                  fontWeight='bold'
+                  lineHeight='36px'
+                  color={'white'}
+                  fontSize='calc(2rem + 1vw)'
+                  textShadow='xl'
+                  mb='20px'
+                  variants={fadeInUp}
                 >
+                  Profit generated Like{' '}
+                  <span style={{ color: '#F3703A' }}>Expert</span> Traders
+                </MotionHeading>
+
+                <MotionHeading
+                  fontSize='18px'
+                  fontWeight='normal'
+                  lineHeight='25px'
+                  textShadow='md'
+                  color='white'
+                  mb={6}
+                  variants={fadeInUp}
+                >
+                  Nextdecademiners Experts help you make Massive profit hourly
+                </MotionHeading>
+                <MotionBox mx='auto' maxW={'16rem'} variants={fadeInUp}>
                   <RouterLink to='/auth/signup'>
                     <Button
                       boxShadow='0 8px 16px rgba(0,0,0,.3)'
@@ -258,17 +293,18 @@ const LandingPage = () => {
                     </Button>
                   </RouterLink>
                 </MotionBox>
-                <Text
+                <MotionText
                   fontSize={{ base: 'md', md: 'xl' }}
                   lineHeight='18px'
                   color='white'
                   textAlign='center'
                   fontWeight='normal'
+                  variants={fadeInUp}
                 >
                   CEO of nextdecademiners.com <br />
                   <b>Bryan Simon</b>
-                </Text>
-              </Box>
+                </MotionText>
+              </MotionBox>
             </Box>
 
             <Grid

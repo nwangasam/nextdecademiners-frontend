@@ -1,14 +1,14 @@
-import React, { lazy, Suspense } from "react";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import Dashboard from "./containers/dashboard";
-import { Grid, Spinner } from "@chakra-ui/core";
+import React, { lazy, Suspense } from 'react';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import Dashboard from './containers/dashboard';
+import { Grid, Spinner } from '@chakra-ui/core';
 
-import "./App.css";
+import './App.css';
 
-const Signup = lazy(() => import("./pages/auth/Signup"));
-const Login = lazy(() => import("./pages/auth/Login"));
+const Signup = lazy(() => import('./pages/auth/Signup'));
+const Login = lazy(() => import('./pages/auth/Login'));
 
-const LandingPage = lazy(() => import("./pages/user/landing"));
+const LandingPage = lazy(() => import('./pages/user/landing'));
 
 class App extends React.Component {
   state = {
@@ -20,14 +20,14 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const token = localStorage.getItem("token");
-    const expiryDate = localStorage.getItem("expiryDate");
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
     if (!token || !expiryDate) return;
 
     if (new Date(expiryDate) <= new Date()) {
       return this.logoutHandler();
     }
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem('userId');
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();
     this.setState({ isAuth: true, token: token, userId: userId });
@@ -36,10 +36,10 @@ class App extends React.Component {
 
   logoutHandler = () => {
     this.setState({ isAuth: false, token: null });
-    localStorage.removeItem("token");
-    localStorage.removeItem("expiryDate");
-    localStorage.removeItem("userId");
-    console.log("You just logged out");
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem('userId');
+    console.log('You just logged out');
   };
 
   setAutologout = (milliseconds) => {
@@ -53,11 +53,11 @@ class App extends React.Component {
     this.setState({ authLoading: true });
     try {
       const response = await fetch(
-        "https://nextdecademiners.herokuapp.com/auth/login",
+        'https://nextdecademiners.herokuapp.com/auth/login',
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             email: authData.email,
@@ -82,11 +82,11 @@ class App extends React.Component {
         userId,
         authLoading: false,
       });
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userId);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
       const remainingMilliseconds = 60 * 60 * 1000 * 24;
       const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-      localStorage.setItem("expiryDate", expiryDate.toISOString());
+      localStorage.setItem('expiryDate', expiryDate.toISOString());
       this.setAutologout(remainingMilliseconds);
     } catch (err) {
       console.log(err);
@@ -103,18 +103,18 @@ class App extends React.Component {
     this.setState({ authLoading: true });
     try {
       const res = await fetch(
-        "https://nextdecademiners.herokuapp.com/auth/signup",
+        'https://nextdecademiners.herokuapp.com/auth/signup',
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             name: authData.name.value,
             email: authData.email.value,
             password: authData.password.value,
             confirmPassword: authData.confirmPassword.value,
-            referalEmail: authData.referalEmail.value
+            referalEmail: authData.referalEmail.value,
           }),
         }
       );
@@ -132,7 +132,7 @@ class App extends React.Component {
       }
       // const result = await res.json();
       this.setState({ isAuth: false, authLoading: false });
-      this.props.history.replace("/auth/login");
+      this.props.history.replace('/auth/login');
     } catch (err) {
       this.setState({
         isAuth: false,
@@ -145,23 +145,23 @@ class App extends React.Component {
   handleError = () => {
     this.setState({ error: null, authLoading: false });
   };
-
+  
   render() {
     let routes = (
       <Switch>
         <Route
-          path="/auth/signup"
+          path='/auth/signup'
           exact
           render={(props) => (
             <Suspense
-              fallback={
-                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+            fallback={
+                <Grid p='absolute' h='100vh' bg='#152136' style={{ placeItems: 'center' }} >
                   <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='yellow.500'
+                    size='xl'
                   />
                 </Grid>
               }
@@ -177,18 +177,18 @@ class App extends React.Component {
           )}
         />
         <Route
-          path="/auth/login"
+          path='/auth/login'
           exact
           render={(props) => (
             <Suspense
               fallback={
-                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                <Grid p='absolute' h='100vh' bg='#152136' style={{ placeItems: 'center' }}>
                   <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='yellow.500'
+                    size='xl'
                   />
                 </Grid>
               }
@@ -206,17 +206,22 @@ class App extends React.Component {
         <Redirect from='/auth/login' to='/' />
         <Redirect from='/auth/signup' to='/' />
         <Route
-          path="/"
+          path='/'
           render={(props) => (
             <Suspense
               fallback={
-                <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                <Grid
+                  p='absolute'
+                  h='100vh'
+                  style={{ placeItems: 'center' }}
+                  bg='#152136'
+                >
                   <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='yellow.500'
+                    size='xl'
                   />
                 </Grid>
               }
@@ -231,20 +236,20 @@ class App extends React.Component {
     if (this.state.isAuth) {
       routes = (
         <Switch>
-          <Redirect from="/auth/login" to="/" />
-          <Redirect from="/auth/signup" to="/" />
+          <Redirect from='/auth/login' to='/' />
+          <Redirect from='/auth/signup' to='/' />
           <Route
-            path="/"
+            path='/'
             render={(props) => (
               <Suspense
                 fallback={
-                  <Grid p="absolute" h="100vh" style={{ placeItems: "center" }}>
+                  <Grid p='absolute' h='100vh' bg='#152136' style={{ placeItems: 'center' }}>
                     <Spinner
-                      thickness="4px"
-                      speed="0.65s"
-                      emptyColor="gray.200"
-                      color="blue.500"
-                      size="xl"
+                      thickness='4px'
+                      speed='0.65s'
+                      emptyColor='gray.200'
+                      color='yellow.500'
+                      size='xl'
                     />
                   </Grid>
                 }
