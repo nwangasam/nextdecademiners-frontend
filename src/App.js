@@ -40,6 +40,7 @@ class App extends React.Component {
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
     console.log('You just logged out');
+    this.props.history.replace('/')
   };
 
   setAutologout = (milliseconds) => {

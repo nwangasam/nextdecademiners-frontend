@@ -76,8 +76,8 @@ const fadeInUp = {
       type: 'spring',
       duration: 0.7,
       stiffness: 260,
-      damping: 20
-    }
+      damping: 20,
+    },
   },
 };
 
@@ -401,7 +401,13 @@ const LandingPage = () => {
               </Box>
             </Grid>
             <Box py='4rem' mx='auto' bg='#152136'>
-              <Image w='full' maxW='400px' mx='auto' src={certificateSrc} alt='Nextdecademiners company certificate' />
+              <Image
+                w='full'
+                maxW='400px'
+                mx='auto'
+                src={certificateSrc}
+                alt='Nextdecademiners company certificate'
+              />
             </Box>
             <Box bg='white' shadow='md' borderRadius='.6rem' p='3rem' my='4rem'>
               <Heading
@@ -429,22 +435,45 @@ const LandingPage = () => {
                 ))}
               </Grid>
               <Box w='full' mx='auto' maxW={'480px'}>
-                <Button
-                  boxShadow='0 4px 8px rgba(0,0,0,.1)'
-                  borderRadius='4px'
-                  h='4rem'
-                  w='100%'
-                  bg='#F3703A'
-                  lineHeight='4rem'
-                  margin='4rem auto'
-                  color={'white'}
-                  fonWeight={'bold'}
-                  fontSize={'20px'}
-                  _hover={{ color: '#F3703A', bg: '#FFF' }}
-                >
-                  <RouterLink to='/auth/signup'>Get Started Now!</RouterLink>
-                </Button>
+                <RouterLink to='/auth/signup'>
+                  <Button
+                    boxShadow='0 4px 8px rgba(0,0,0,.1)'
+                    borderRadius='4px'
+                    h='4rem'
+                    w='100%'
+                    bg='#F3703A'
+                    lineHeight='4rem'
+                    margin='4rem auto'
+                    color={'white'}
+                    fonWeight={'bold'}
+                    fontSize={'20px'}
+                    _hover={{ color: '#F3703A', bg: '#FFF' }}
+                  >
+                    Get Started Now!
+                  </Button>
+                </RouterLink>
               </Box>
+            </Box>
+            <Box p={'2rem 1rem'} maxW='540px' mx='auto'>
+              <Box
+                as='iframe'
+                h='290px'
+                w='full'
+                src='https://www.youtube.com/embed/Um63OQz3bjo'
+                frameborder='0'
+                allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+                allowfullscreen
+              ></Box>
+              <Box
+                mt={4}
+                as='iframe'
+                h='290px'
+                w='full'
+                src='https://www.youtube.com/embed/RKBczGEcP10'
+                frameborder='0'
+                allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+                allowfullscreen
+              ></Box>
             </Box>
           </Route>
         </Switch>
