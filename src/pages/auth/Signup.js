@@ -98,7 +98,8 @@ class Signup extends Component {
     return (
       <>
         <Box
-          bg='#152136'
+          // bg='#152136'
+          bg='#F5F5F5'
           w='full'
           pos='fixed'
           top='0'
@@ -107,11 +108,11 @@ class Signup extends Component {
         ></Box>
         <Box
           maxW='540px'
-          w='75%'
+          w='92%'
           boxShadow='inset 0 0.4rem 2rem rgba(0,0,0,.1)'
           bg='white'
           borderRadius='8px'
-          margin='3rem auto 5rem'
+          margin='3rem auto 7rem'
           p={5}
           py='2rem'
         >

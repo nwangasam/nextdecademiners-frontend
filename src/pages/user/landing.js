@@ -183,15 +183,7 @@ const LandingPage = () => {
               <Image src={logoSrc} alt='' size='100%' />
             </Box>
             <Box d={{ base: 'none', lg: 'flex' }}>{renderCrypto}</Box>
-            <div
-              style={{ marginLeft: 'auto' }}
-              className='js-ga bklyn-btn-holder bklyn-btn-last bklyn-btn-center button button--primary button--arrow button--mobile-block button--bold ml0 mr0'
-              id='google_translate_element'
-            >
-              <div className='close-search-suggestions'>
-                <i className='os-icon os-icon-x'></i>
-              </div>
-            </div>
+            <div id='google_translate_element'></div>
           </Flex>
           <Divider style={{ opacity: '.1' }} d={{ lg: 'none' }} />
           <Box d={{ lg: 'none' }}>

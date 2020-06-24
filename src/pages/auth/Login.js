@@ -45,7 +45,7 @@ const Login = (props) => {
   return (
     <>
       <Box
-        bg='#152136'
+      bg='#F5F5F5'
         w='full'
         pos='fixed'
         top='0'
@@ -57,7 +57,7 @@ const Login = (props) => {
         maxW='540px'
         boxShadow='inset 0 0.4rem 2rem rgba(0,0,0,.1)'
         bg='white'
-        w='75%'
+        w='92%'
         borderRadius='8px'
         margin='3rem auto'
         p={5}
