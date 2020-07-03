@@ -1,0 +1,70 @@
+/*
+LAZY LOADING AND INFINITE LOADING STYLES */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  line-height: 1;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.navbar {
+  width: 100%;
+  padding: 1.2rem;
+}
+
+.bg-light {
+  background: rgb(222, 224, 224);
+  color: black;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.row {
+  display: grid;
+  grid-gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.card {
+    overflow: hidden;
+    border-radius: 4px;
+}
+.card-img-top {
+    border-radius: 4px;
+    opacity: 1;
+}
+
+.card-footer {
+    border: 1px solid blueviolet;
+    border-radius: 4px;
+    padding: .8rem;
+    margin-top: .4rem;
+}

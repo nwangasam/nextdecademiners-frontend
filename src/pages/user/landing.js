@@ -101,10 +101,10 @@ const LandingPage = () => {
         flex={'1'}
         key={c.id}
         as='li'
-        ml={{ lg: '3rem' }}
+        ml={{ lg: '2.4rem' }}
         textAlign='center'
         d={{ lg: 'flex' }}
-        flexDirection={{ lg: 'column' }}
+        // flexDirection={{ lg: 'column' }}
         variants={cryptoVariant}
       >
         <Text
@@ -114,7 +114,7 @@ const LandingPage = () => {
           fontSize={{ base: '.8rem', lg: '1rem' }}
           whiteSpace='nowrap'
         >
-          {c.label}
+          {c.label}: &nbsp;
         </Text>
         <Text
           color={'white'}
@@ -237,23 +237,22 @@ const LandingPage = () => {
                 md: 'center',
                 lg: 'top center',
               }}
-              textAlign={'center'}
-              minH='85vh'
+              textAlign={'left'}
+              minH='100vh'
             >
               <MotionBox
+              className='wrapper'
                 pt={{ base: '10vh', md: '15vh', lg: '20vh' }}
-                px={'20px'}
-                maxW='600px'
-                margin='0 auto'
+                px={{ base: '20px', lg: '0' }}
                 variants={stagger}
                 initial='initial'
                 animate='animate'
               >
                 <MotionHeading
                   fontWeight='bold'
-                  lineHeight='40px'
+                  lineHeight='1.45'
                   color={'white'}
-                  fontSize='calc(2rem + 1vw)'
+                  fontSize='calc(2.4rem + 1vw)'
                   textShadow='xl'
                   mb='20px'
                   variants={fadeInUp}
@@ -273,7 +272,7 @@ const LandingPage = () => {
                 >
                   Nextdecademiners Experts help you make Massive profit hourly
                 </MotionHeading>
-                <MotionBox mx='auto' maxW={'16rem'} variants={fadeInUp}>
+                <MotionBox maxW={'16rem'} variants={fadeInUp}>
                   <RouterLink to='/auth/signup'>
                     <Button
                       boxShadow='0 8px 16px rgba(0,0,0,.3)'
@@ -297,7 +296,7 @@ const LandingPage = () => {
                   fontSize={{ base: 'md', md: 'xl' }}
                   lineHeight='18px'
                   color='white'
-                  textAlign='center'
+                  textAlign='left'
                   fontWeight='normal'
                   variants={fadeInUp}
                 >
@@ -342,13 +341,13 @@ const LandingPage = () => {
               <Plan />
             </Box>
             <Grid
-              mt={8}
+              className="wrapper"
+              my={8}
               pt={8}
               rowGap={5}
               templateColumns={{ base: '1fr', lg: '2fr 1fr' }}
               alignItems='center'
-              className='wrapper'
-              mx={4}
+              mx='auto'
               ref={aboutRef}
             >
               <Heading
@@ -361,7 +360,7 @@ const LandingPage = () => {
               >
                 About Nextdecademiners.com
               </Heading>
-              <Box borderRight={{ lg: '1px solid #eee' }} pr={{ lg: 3 }}>
+              <Box borderRight={{ lg: '1px solid #eee' }} pr={{ lg: 5 }}>
                 <Text fontSize={'18px'} lineHeight={'32px'}>
                   Nextdecademiners.com is United Kingdom registered company,
                   (Company Number: 06416732, Enterprise House, 2 Pass Street,
@@ -475,6 +474,11 @@ const LandingPage = () => {
         </Switch>
       </Suspense>
       <Box bg={'#152136'} as='footer' py={6} color={'white'}>
+        <select value='A'>
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
         <Grid
           templateColumns='repeat(auto-fit, minmax(200px, 1fr))'
           className='wrapper'
