@@ -28,6 +28,8 @@ import {
   FcAssistant,
   FcIdea,
 } from 'react-icons/fc';
+import { FaBitcoin, FaEthereum } from 'react-icons/fa';
+import { ReactComponent as BitcoinCash } from '../../assets/images/bitcoin-cash.svg';
 import { motion } from 'framer-motion';
 
 import Plan from '../../components/Investment/plan';
@@ -36,7 +38,7 @@ const Faq = lazy(() => import('./faq'));
 const MotionBox = motion.custom(Box);
 const MotionFlex = motion.custom(Flex);
 const MotionHeading = motion.custom(Heading);
-const MotionText = motion.custom(Text);
+// const MotionText = motion.custom(Text);
 
 const cryptoVariant = {
   initial: {
@@ -75,8 +77,7 @@ const fadeInUp = {
     transition: {
       type: 'spring',
       duration: 0.7,
-      stiffness: 260,
-      damping: 20,
+      staggerChildren: 0.4,
     },
   },
 };
@@ -86,9 +87,27 @@ const LandingPage = () => {
   const homeRef = useRef(null);
   const scrollTo = (ref) => window.scrollTo(0, ref.current.offsetTop);
   let crypto = [
-    { id: 'bitcoin', label: 'Bitcoin', price: '9,451.71' },
-    { id: 'ethereum', label: 'Ethereum', price: '237.19' },
-    { id: 'bitcoin-cash', label: 'Bitcoin Cash', price: '240.20' },
+    {
+      id: 'bitcoin',
+      label: 'Bitcoin',
+      price: '9,451.71',
+      icon: FaBitcoin,
+      color: 'orange',
+    },
+    {
+      id: 'ethereum',
+      label: 'Ethereum',
+      price: '237.19',
+      icon: FaEthereum,
+      color: 'gray',
+    },
+    {
+      id: 'bitcoin-cash',
+      label: 'Bitcoin Cash',
+      price: '240.20',
+      color: 'yellow',
+      icon: BitcoinCash,
+    },
   ];
 
   const [bitcoin, setBitcoin] = useState();
@@ -102,20 +121,14 @@ const LandingPage = () => {
         key={c.id}
         as='li'
         ml={{ lg: '2.4rem' }}
-        textAlign='center'
+        w='full'
         d={{ lg: 'flex' }}
-        // flexDirection={{ lg: 'column' }}
+        justifyContent="center"
         variants={cryptoVariant}
+        display='flex'
+        alignItems='center'
       >
-        <Text
-          mb='-1px'
-          color={'#c2c9d5'}
-          fontWeight='normal'
-          fontSize={{ base: '.8rem', lg: '1rem' }}
-          whiteSpace='nowrap'
-        >
-          {c.label}: &nbsp;
-        </Text>
+        <Box as={c.icon} size='28px' mr={1} color={`${c.color}.400`}></Box>
         <Text
           color={'white'}
           fontSize={{ base: '.85rem', lg: '1rem' }}
@@ -176,34 +189,38 @@ const LandingPage = () => {
 
   return (
     <Box bg={'#F9F9F9'} minH='100vh' ref={homeRef}>
-      <Box as='header' bg='#152136' p={'1rem 0'}>
-        <div className='wrapper'>
-          <Flex padding={'0'} as='nav' justify={'space-between'} align='center'>
-            <Box size={{ lg: '25%' }}>
-              <Image src={logoSrc} alt='' size='100%' />
-            </Box>
-            <Box d={{ base: 'none', lg: 'flex' }}>{renderCrypto}</Box>
-            <div id='google_translate_element'></div>
-          </Flex>
-          <Divider style={{ opacity: '.1' }} d={{ lg: 'none' }} />
-          <Box d={{ lg: 'none' }}>
-            <MotionFlex
-              as='ul'
-              p='0'
-              m='0'
-              style={{ listStyle: 'none' }}
-              align='center'
-              justify={'space-around'}
-              color={'white'}
-              variants={stagger}
-              initial='initial'
-              animate='animate'
-            >
-              {renderCrypto}
-            </MotionFlex>
+      <MotionBox
+        as='header'
+        pos='absolute'
+        w='full'
+        className='header'
+        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -74, opacity: 0 }}
+        transition={{ duration: 0.6, ease: [0.5, -0.01, 0.04, 0.9] }}
+      >
+        <Flex padding={'0'} as='nav' justify={'space-between'} w='full' align='center'>
+          <Box w={{ lg: '340px' }} mx={{ base: 'auto', md: '0px' }}>
+            <Image src={logoSrc} alt='' w='full' />
           </Box>
-        </div>
-      </Box>
+          <Box d={{ base: 'none', lg: 'flex' }}>{renderCrypto}</Box>
+        </Flex>
+        <Divider style={{ opacity: '.1' }} d={{ lg: 'none' }} />
+        <Box d={{ lg: 'none' }}  ml={{ lg: 'auto'}} w='full'>
+          <MotionFlex
+            as='ul'
+            p='0'
+            m='0'
+            style={{ listStyle: 'none' }}
+            align='center'
+            color={'white'}
+            variants={stagger}
+            initial='initial'
+            animate='animate'
+          >
+            {renderCrypto}
+          </MotionFlex>
+        </Box>
+      </MotionBox>
 
       <Suspense
         fallback={
@@ -228,73 +245,76 @@ const LandingPage = () => {
         <Switch>
           <Route path='/faqs' component={Faq} />
           <Route path='/'>
-            <Box
+            <MotionBox
               as='section'
               bgImage={{ base: `url(${heroBg})`, md: `url(${heroBgLg})` }}
               bgSize={'cover'}
               bgPos={{
-                base: 'bottom center',
-                md: 'center',
-                lg: 'top center',
+                base: 'center',
+                md: 'top center',
               }}
               textAlign={'left'}
               minH='100vh'
             >
               <MotionBox
-              className='wrapper'
-                pt={{ base: '10vh', md: '15vh', lg: '20vh' }}
+                className='wrapper'
+                pt={{ base: '20vh', md: '25vh' }}
                 px={{ base: '20px', lg: '0' }}
+                textAlign='center'
                 variants={stagger}
                 initial='initial'
                 animate='animate'
               >
                 <MotionHeading
                   fontWeight='bold'
-                  lineHeight='1.45'
+                  lineHeight='1.2'
                   color={'white'}
-                  fontSize='calc(2.4rem + 1vw)'
+                  fontSize='calc(2.4rem + 1.2vw)'
                   textShadow='xl'
-                  mb='20px'
+                  mb={6}
                   variants={fadeInUp}
                 >
-                  Profit generated Like{' '}
-                  <span style={{ color: '#F3703A' }}>Expert</span> Traders
+                  Generate profit trading <br /> crypto with{' '}
+                  <Box as={'span'} color='#F3703A'>
+                    Experts
+                  </Box>
                 </MotionHeading>
 
                 <MotionHeading
-                  fontSize='18px'
+                  fontSize='20px'
                   fontWeight='normal'
-                  lineHeight='25px'
+                  lineHeight='1.54'
                   textShadow='md'
+                  maxW={'438px'}
+                  mx='auto'
                   color='white'
                   mb={6}
                   variants={fadeInUp}
                 >
                   Nextdecademiners Experts help you make Massive profit hourly
                 </MotionHeading>
-                <MotionBox maxW={'16rem'} variants={fadeInUp}>
+                <MotionBox maxW={'320px'} mx='auto' variants={fadeInUp}>
                   <RouterLink to='/auth/signup'>
                     <Button
                       boxShadow='0 8px 16px rgba(0,0,0,.3)'
-                      borderRadius='4px'
-                      h='50px'
+                      h='64px'
                       w='full'
                       bg='#F3703A'
                       lineHeight='50px'
-                      my={{ base: 6, md: 8 }}
+                      my={{ base: 4, md: 6 }}
                       color={'white'}
                       fonWeight={'bold'}
+                      letterSpacing={'1.4px'}
                       fontSize={'18px'}
-                      maxW='260px'
                       _hover={{ color: '#F3703A', bg: '#FFF' }}
                     >
-                      Get Started
+                      GET STARTED
                     </Button>
                   </RouterLink>
                 </MotionBox>
-                <MotionText
+                {/* <MotionText
                   fontSize={{ base: 'md', md: 'xl' }}
-                  lineHeight='18px'
+                  lineHeight='1.4'
                   color='white'
                   textAlign='left'
                   fontWeight='normal'
@@ -302,9 +322,9 @@ const LandingPage = () => {
                 >
                   CEO of nextdecademiners.com <br />
                   <b>Bryan Simon</b>
-                </MotionText>
+                </MotionText> */}
               </MotionBox>
-            </Box>
+            </MotionBox>
 
             <Grid
               templateColumns={`
@@ -329,19 +349,28 @@ const LandingPage = () => {
             </Grid>
 
             <Box my={10} textAlign={'center'} py={4}>
-              <Heading fontSize='calc(1rem + 1vw)' color='#000'>
+              <Heading
+                fontSize='calc(2rem + 1vw)'
+                color='#000'
+                textTransform={'uppercase'}
+              >
                 Since
               </Heading>
               <Text fontSize={'2xl'}>December 1st, 2019</Text>
             </Box>
             <Box textAlign={'center'} mx={'auto'} className='wrapper'>
-              <Heading fontSize='calc(1rem + 1vw)' mb={8} color='#000'>
+              <Heading
+                fontSize='calc(2rem + 1vw)'
+                mb={8}
+                color='#000'
+                textTransform={'uppercase'}
+              >
                 Choose An Investment Plan
               </Heading>
               <Plan />
             </Box>
             <Grid
-              className="wrapper"
+              className='wrapper'
               my={8}
               pt={8}
               rowGap={5}
@@ -351,14 +380,15 @@ const LandingPage = () => {
               ref={aboutRef}
             >
               <Heading
+                id='about-us'
                 textAlign={'center'}
                 gridColumn={'1 / -1'}
                 mb={4}
+                fontSize='calc(2rem + 1vw)'
                 color='#000'
-                fontSize='calc(1rem + 1vw)'
-                id='about-us'
+                textTransform={'uppercase'}
               >
-                About Nextdecademiners.com
+                About us
               </Heading>
               <Box borderRight={{ lg: '1px solid #eee' }} pr={{ lg: 5 }}>
                 <Text fontSize={'18px'} lineHeight={'32px'}>
@@ -402,12 +432,13 @@ const LandingPage = () => {
             </Box>
             <Box bg='white' shadow='md' borderRadius='.6rem' p='3rem' my='4rem'>
               <Heading
-                fontSize='calc(1rem + 1vw)'
-                color='#000'
                 mb={{ base: '4rem' }}
                 textAlign={'center'}
+                fontSize='calc(2rem + 1vw)'
+                color='#000'
+                textTransform={'uppercase'}
               >
-                Why Choose Nextdecademiners.com?
+                Why Choose Us?
               </Heading>
               <Grid
                 gap={10}
@@ -425,22 +456,22 @@ const LandingPage = () => {
                   </Flex>
                 ))}
               </Grid>
-              <Box w='full' mx='auto' maxW={'480px'}>
+              <Box maxW={'320px'} mx='auto'>
                 <RouterLink to='/auth/signup'>
                   <Button
-                    boxShadow='0 4px 8px rgba(0,0,0,.1)'
-                    borderRadius='4px'
-                    h='4rem'
-                    w='100%'
+                    boxShadow='0 8px 16px rgba(0,0,0,.3)'
+                    h='64px'
+                    w='full'
                     bg='#F3703A'
-                    lineHeight='4rem'
-                    margin='4rem auto'
+                    lineHeight='50px'
+                    my={{ base: 4, md: 6 }}
                     color={'white'}
                     fonWeight={'bold'}
-                    fontSize={'20px'}
+                    letterSpacing={'1.4px'}
+                    fontSize={'18px'}
                     _hover={{ color: '#F3703A', bg: '#FFF' }}
                   >
-                    Get Started Now!
+                    GET STARTED NOW
                   </Button>
                 </RouterLink>
               </Box>
@@ -448,21 +479,22 @@ const LandingPage = () => {
             <Grid
               p={'1.2rem 1rem 2rem'}
               mx='auto'
+              className='wrapper'
               templateColumns='repeat(auto-fit, minmax(300px, 1fr))'
               gap='2rem'
             >
               <Box
                 as='iframe'
-                height='51vw'
+                height={{ base: '51vw', lg: '320px' }}
                 w='full'
                 src='https://www.youtube.com/embed/Um63OQz3bjo'
                 frameborder='0'
                 allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
                 allowfullscreen
-                ></Box>
+              ></Box>
               <Box
                 as='iframe'
-                height='51vw'
+                height={{ base: '51vw', lg: '320px' }}
                 w='full'
                 src='https://www.youtube.com/embed/RKBczGEcP10'
                 frameborder='0'
@@ -474,11 +506,6 @@ const LandingPage = () => {
         </Switch>
       </Suspense>
       <Box bg={'#152136'} as='footer' py={6} color={'white'}>
-        <select value='A'>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-        </select>
         <Grid
           templateColumns='repeat(auto-fit, minmax(200px, 1fr))'
           className='wrapper'
@@ -541,7 +568,9 @@ const LandingPage = () => {
             </Text>
             <Text fontSize={'12px'}>v.1.2.0</Text>
           </Box>
+          <Box id="google_translate_element"></Box>
         </Grid>
+
       </Box>
     </Box>
   );

@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   font-family: 'Montserrat', sans-serif;
   scroll-behavior: smooth;
 }
@@ -13,18 +14,41 @@ body {
    display: none;
 } */
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+
+  height: 7rem;
+  background: rgb(21, 21, 23);
+  background: linear-gradient(
+    180deg,
+    rgba(21, 21, 23, 0.6867121848739496) 0%,
+    rgba(9, 9, 121, 0) 75%,
+    rgba(0, 212, 255, 0) 100%
+  );
+}
+
+@media (max-width: 740px) {
+  .header {
+    justify-content: center;
+    flex-direction: column;
+  } 
+}
+
 svg {
   width: 22px;
 }
 
 ul {
   list-style: none;
-  padding: 09
+  padding: 09;
 }
 
 .wrapper {
   max-width: 65rem;
-  margin: auto;
+  margin: 0 auto;
   padding: 0 1.2rem;
 }
 
