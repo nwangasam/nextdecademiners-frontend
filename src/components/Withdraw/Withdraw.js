@@ -147,6 +147,7 @@ const Withdraw = (props) => {
           placeholder={`Your ${crypto[currencyId].label} address `}
           size="lg"
           value={address}
+          required={true}
           onChange={(e) => inputChangeHandler(e, setAddress)}
         />
       </Stack>
@@ -160,6 +161,7 @@ const Withdraw = (props) => {
             <InputGroup size="lg" m={0} w="full">
               <Input
                 type="number"
+                required={true}
                 placeholder="$0.00"
                 onChange={(e) => inputChangeHandler(e, setAmount)}
               />
