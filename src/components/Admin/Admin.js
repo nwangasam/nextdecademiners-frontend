@@ -8,7 +8,6 @@ import { ReactComponent as BitcoinCashIcon } from '../../assets/images/bitcoin-c
 import {
   Flex,
   Box,
-  Heading,
   Text,
   Skeleton,
   Button,
@@ -100,7 +99,12 @@ const Admin = (props) => {
         requestOption
       );
       
-      setPageError(false)
+      setLimit({
+        users: 8,
+        deposits: 10,
+        withdrawals: 7,
+      });
+      setPageError(false);
       setLoadingPage(false);
       return request.data;
     } catch(err) {
@@ -125,13 +129,15 @@ const Admin = (props) => {
             icon={loadingPage ? 'spinner' : 'arrow-left'}
             onClick={() => setPage((p) => ({ ...p, [type]: prev[type].page }))}
             disabled={!prev[type] || loadingPage}
-          />
-          <Box as='span' fontWeight='bold' margin='0 4rem'>{page[type]} / {Math.ceil(total[type] / limit[type])}</Box>
+            color={pageError ? 'red' : ''}
+            />
+          <Box as='span' color={pageError ? 'red.400' : 'inherit'} fontWeight='bold' margin='0 4rem'>{page[type]} / {Math.ceil(total[type] / limit[type])}</Box>
           <IconButton
             aria-label='Next Button'
             icon={loadingPage ? 'spinner' : 'arrow-right'}
             onClick={() => setPage((p) => ({ ...p, [type]: next[type].page }))}
             disabled={!next[type] || loadingPage}
+            color={pageError ? 'red' : ''}
           />
         </Flex>
       )
@@ -148,7 +154,7 @@ const Admin = (props) => {
         setUsers(() => users);
         setPagination('users', prev, next, totalUsers);
     })();
-  }, [page.users, limit.users]);
+  }, [page.users, limit.users, fetchAdminData]);
 
   // fetch all deposits
   useEffect(() => {
@@ -166,7 +172,7 @@ const Admin = (props) => {
       setDeposits(() => deposits);
       setPagination('deposits', prev, next, totalDeposits);
     })();
-  }, [page.deposits, limit.deposits]);
+  }, [page.deposits, limit.deposits, fetchAdminData]);
 
   // fetch all withdrawals
   useEffect(() => {
@@ -189,7 +195,7 @@ const Admin = (props) => {
       setWithdrawals(() => withdrawals);
       setPagination('withdrawals', prev, next, totalWithdrawals);
     })();
-  }, [page.withdrawals, limit.withdrawals]);
+  }, [page.withdrawals, limit.withdrawals, fetchAdminData]);
 
   const stats = [
     { id: 'total', text: 'Users', total: total.users, color: 'purple' },

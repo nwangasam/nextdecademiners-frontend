@@ -138,9 +138,14 @@ const Crypto = ({ user, totalBal, token }) => {
 
       setPageError(false);
       setLoadingPage(false);
+      setLimit({
+        deposits: 5,
+        withdrawals: 4,
+      });
       return request.data;
     } catch (err) {
-      setPageError(true);
+      setPageError(() => true);
+      console.log('ERROR FROM CRYPTO', pageError)
       setLoadingPage(false);
       return;
     }
@@ -155,7 +160,7 @@ const Crypto = ({ user, totalBal, token }) => {
       setDeposits(() => deposits);
       setPagination('deposits', prev, next, totalDeposits);
     })();
-  }, [token, page.deposits, limit.deposits]);
+  }, [token, page.deposits, limit.deposits, fetchUserData]);
 
   useEffect(() => {
     (async () => {
@@ -166,7 +171,7 @@ const Crypto = ({ user, totalBal, token }) => {
       setWithdrawals(() => withdrawals);
       setPagination('withdrawals', prev, next, totalWithdrawals);
     })();
-  }, [token, page.withdrawals, limit.withdrawals]);
+  }, [token, page.withdrawals, limit.withdrawals, fetchUserData]);
 
   return (
     <Box gridColumn={{ lg: '2 / 3' }}>

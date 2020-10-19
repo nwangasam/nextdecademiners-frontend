@@ -26,7 +26,7 @@ const Dashboard = (props) => {
   const [user, setUser] = useState(null);
   
 
-  const [loadingPage, setLoadingPage] = useState(false);
+  // const [loadingPage, setLoadingPage] = useState(false);
   const [pageError, setPageError] = useState(false);
   
   const renderTotatBalance = (currency) => {
@@ -51,7 +51,6 @@ const Dashboard = (props) => {
         'Content-Type': 'application/json',
       },
     };
-    setLoadingPage(true);
     try {
       const request = await axios(
         `https://nextdecademiners.herokuapp.com/user/${route}`,
@@ -59,11 +58,10 @@ const Dashboard = (props) => {
       );
       
       setPageError(false)
-      setLoadingPage(false);
       return request.data;
     } catch(err) {
-      setPageError(true)
-      setLoadingPage(false);
+      setPageError(() => true)
+      console.log('[error from dashboard]', pageError)
       return;
     }
   }
@@ -74,7 +72,7 @@ const Dashboard = (props) => {
       if (!user) return;
       setUser(() => user);
     })()
-  }, []);
+  }, [fetchUserData]);
   return (
     <Layout
       header={
