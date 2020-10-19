@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect } from "react";
+import React, { lazy, Suspense, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import { Grid, useDisclosure } from "@chakra-ui/core";
@@ -43,7 +43,7 @@ const Dashboard = (props) => {
     }).format(Number(total));
   };
 
-  async function fetchUserData(route) {
+  const fetchUserData = useCallback(async (route) => {
     const requestOption = {
       method: 'get',
       headers: {
@@ -64,7 +64,8 @@ const Dashboard = (props) => {
       console.log('[error from dashboard]', pageError)
       return;
     }
-  }
+  }, [route, token])
+ 
 
   useEffect(() => {
     (async () => {

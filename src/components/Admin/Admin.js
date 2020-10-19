@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, createRef, useCallback } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -84,35 +84,38 @@ const Admin = (props) => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [pageError, setPageError] = useState(false);
 
-  async function fetchAdminData(route) {
-    const requestOption = {
-      method: 'get',
-      headers: {
-        Authorization: `Bearer ${props.token}`,
-        'Content-Type': 'application/json',
-      },
-    };
-    setLoadingPage(true);
-    try {
-      const request = await axios(
-        `https://nextdecademiners.herokuapp.com/admin/${route}`,
-        requestOption
-      );
-      
-      setLimit({
-        users: 8,
-        deposits: 10,
-        withdrawals: 7,
-      });
-      setPageError(false);
-      setLoadingPage(false);
-      return request.data;
-    } catch(err) {
-      setPageError(true)
-      setLoadingPage(false);
-      return;
-    }
-  }
+  const fetchAdminData = useCallback(
+    async (route) => {
+      const requestOption = {
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${props.token}`,
+          'Content-Type': 'application/json',
+        },
+      };
+      setLoadingPage(true);
+      try {
+        const request = await axios(
+          `https://nextdecademiners.herokuapp.com/admin/${route}`,
+          requestOption
+        );
+
+        setLimit({
+          users: 8,
+          deposits: 10,
+          withdrawals: 7,
+        });
+        setPageError(false);
+        setLoadingPage(false);
+        return request.data;
+      } catch (err) {
+        setPageError(true);
+        setLoadingPage(false);
+        return;
+      }
+    },
+    [route, token]
+  );
 
   function setPagination(type, prev, next, total) {
     setTotal((t) => ({ ...t, [type]: total }));
@@ -130,8 +133,15 @@ const Admin = (props) => {
             onClick={() => setPage((p) => ({ ...p, [type]: prev[type].page }))}
             disabled={!prev[type] || loadingPage}
             color={pageError ? 'red' : ''}
-            />
-          <Box as='span' color={pageError ? 'red.400' : 'inherit'} fontWeight='bold' margin='0 4rem'>{page[type]} / {Math.ceil(total[type] / limit[type])}</Box>
+          />
+          <Box
+            as='span'
+            color={pageError ? 'red.400' : 'inherit'}
+            fontWeight='bold'
+            margin='0 4rem'
+          >
+            {page[type]} / {Math.ceil(total[type] / limit[type])}
+          </Box>
           <IconButton
             aria-label='Next Button'
             icon={loadingPage ? 'spinner' : 'arrow-right'}
@@ -151,8 +161,8 @@ const Admin = (props) => {
         `users?page=${page.users}&limit=${limit.users}`
       );
       if (!users) return;
-        setUsers(() => users);
-        setPagination('users', prev, next, totalUsers);
+      setUsers(() => users);
+      setPagination('users', prev, next, totalUsers);
     })();
   }, [page.users, limit.users, fetchAdminData]);
 
@@ -276,9 +286,14 @@ const Admin = (props) => {
         <TabList mb='1em'>
           {stats.map((stat, i) => {
             return (
-              <Tab outline='none' key={stat.id + i} flexWrap='wrap' display='flex'>
+              <Tab
+                outline='none'
+                key={stat.id + i}
+                flexWrap='wrap'
+                display='flex'
+              >
                 <Skeleton isLoaded={users}>
-                  {stat.text}{' '}<br></br>
+                  {stat.text} <br></br>
                   <Badge variantColor={stat.color}>{stat.total}</Badge>
                 </Skeleton>
               </Tab>
@@ -299,7 +314,7 @@ const Admin = (props) => {
                     <Box ml='3'>
                       <Text fontWeight='bold'>
                         {user.name}
-                        <Badge ml='1' variantColor='green' as='span' >
+                        <Badge ml='1' variantColor='green' as='span'>
                           {moment(user.createdAt).fromNow().toString()}
                         </Badge>
                       </Text>

@@ -151,6 +151,35 @@ const Crypto = ({ user, totalBal, token }) => {
     }
   }
 
+  const fetchUserData = useCallback(async (route) => {
+    const requestOption = {
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const request = await axios(
+        `https://nextdecademiners.herokuapp.com/user/${route}`,
+        requestOption
+      );
+
+      setPageError(false);
+      setLoadingPage(false);
+      setLimit({
+        deposits: 5,
+        withdrawals: 4,
+      });
+      return request.data;
+    } catch(err) {
+      setPageError(() => true);
+      console.log('ERROR FROM CRYPTO', pageError)
+      setLoadingPage(false);
+      return;
+    }
+  }, [route, token])
+
   useEffect(() => {
     (async () => {
       const { deposits, totalDeposits, prev, next } = await fetchUserData(
