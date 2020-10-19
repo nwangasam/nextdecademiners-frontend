@@ -148,7 +148,7 @@ const Crypto = ({ user, totalBal, token }) => {
       setLoadingPage(false);
       return;
     }
-  }, [token])
+  }, [token, pageError])
 
   useEffect(() => {
     (async () => {
