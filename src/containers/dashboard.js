@@ -64,7 +64,7 @@ const Dashboard = (props) => {
       console.log('[error from dashboard]', pageError)
       return;
     }
-  }, [token])
+  }, [props.token])
  
 
   useEffect(() => {
