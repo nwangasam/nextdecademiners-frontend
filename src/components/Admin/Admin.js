@@ -126,7 +126,7 @@ const Admin = (props) => {
   function renderPagination(type) {
     return (
       (prev[type] || next[type]) && (
-        <Flex margin='0 auto' justifyContent='flex-end' alignItems='center'>
+        <Flex margin='0 auto' justifyContent='flex-start' alignItems='center'>
           <IconButton
             aria-label='Previous Button'
             icon={loadingPage ? 'spinner' : 'arrow-left'}
