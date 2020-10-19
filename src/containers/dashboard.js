@@ -22,10 +22,13 @@ const Admin = lazy(() => import("../components/Admin/Admin"));
 
 const Dashboard = (props) => {
   const { isOpen, onClose, onToggle } = useDisclosure();
+    
   const [user, setUser] = useState(null);
-  const [userDeposits, setUserDeposits] = useState(null);
-  const [userWithdrawals, setUserWithdrawals] = useState(null);
+  
 
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [pageError, setPageError] = useState(false);
+  
   const renderTotatBalance = (currency) => {
     if (!user) return;
     let total = 0;
@@ -40,37 +43,38 @@ const Dashboard = (props) => {
     }).format(Number(total));
   };
 
-  
+  async function fetchUserData(route) {
+    const requestOption = {
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    setLoadingPage(true);
+    try {
+      const request = await axios(
+        `https://nextdecademiners.herokuapp.com/user/${route}`,
+        requestOption
+      );
+      
+      setPageError(false)
+      setLoadingPage(false);
+      return request.data;
+    } catch(err) {
+      setPageError(true)
+      setLoadingPage(false);
+      return;
+    }
+  }
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const urls = [
-        "https://nextdecademiners.herokuapp.com/user/profile",
-        "https://nextdecademiners.herokuapp.com/user/deposits",
-        "https://nextdecademiners.herokuapp.com/user/withdrawals",
-      ];
-    
-      const requestOption = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${props.token}`,
-        },
-      };
-      
-      const requests = urls.map((url) => axios(url, requestOption));
-      try {
-        const response = await Promise.all(requests);
-        const [user, deposits, withdrawals] = response;
-        setUser(user.data.user);
-        setUserDeposits(deposits.data.deposits);
-        setUserWithdrawals(withdrawals.data.withdrawals);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchUserData();
-  }, [props.token]);
-
+    (async () => {
+      const { user } = await fetchUserData('profile');
+      if (!user) return;
+      setUser(() => user);
+    })()
+  }, []);
   return (
     <Layout
       header={
@@ -121,10 +125,9 @@ const Dashboard = (props) => {
               render={(properties) => (
                 <Crypto
                   {...properties}
+                  token={props.token}
                   user={user}
-                  totalBalance={renderTotatBalance}
-                  deposits={user && userDeposits}
-                  withdrawals={user && userWithdrawals}
+                  totalBal={renderTotatBalance}
                 />
               )}
             />

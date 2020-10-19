@@ -51,7 +51,7 @@ const Plan = (props) => (
   >
     {plans.map((p, i) => (
       <Flex
-        key={i}
+        key={i + Math.random()}
         textAlign={"center"}
         direction="column"
         borderRadius={"8px"}

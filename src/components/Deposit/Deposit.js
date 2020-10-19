@@ -144,7 +144,7 @@ const Deposit = (props) => {
           onChange={(e) => inputChangeHandler(e, setPlans)}
         >
           {crypto.plans.map((_, i) => (
-            <option value={_} key={i}>
+            <option value={_} key={i + Math.random()}>
               {_}
             </option>
           ))}

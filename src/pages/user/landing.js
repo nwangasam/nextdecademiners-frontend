@@ -118,7 +118,7 @@ const LandingPage = () => {
     return (
       <MotionBox
         flex={'1'}
-        key={c.id}
+        key={c.id + Math.random()}
         as='li'
         ml={{ lg: '2.4rem' }}
         w='full'
@@ -339,7 +339,7 @@ const LandingPage = () => {
               className='wrapper'
             >
               {benefits.map((b, i) => (
-                <Flex key={i} p={'0 1.6rem'} my={6} align={'center'}>
+                <Flex key={i + Math.random()} p={'0 1.6rem'} my={6} align={'center'}>
                   <Box as={b.icon} size='60px' mr='24px' />
                   <Text fontSize={'xl'} lineHeight={'short'} fontWeight='500'>
                     {b.label}
@@ -447,7 +447,7 @@ const LandingPage = () => {
                 className='wrapper'
               >
                 {whyChooseUs.map((_, i) => (
-                  <Flex direction='column' key={i}>
+                  <Flex direction='column' key={i + Math.random()}>
                     <Box as={_.icon} size='5rem' mb='1rem' />
                     <Heading mb={3} fontSize={'20px'} fontWeight='500'>
                       {_.title}

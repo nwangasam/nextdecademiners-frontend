@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer,useRef, useCallback } from 'react';
+import React, { useEffect, useReducer, useRef, useCallback } from 'react';
 
 import './index.css';
 
@@ -107,7 +107,7 @@ function App() {
           {imgData.images.map((image, index) => {
             const { author, download_url } = image;
             return (
-              <div key={index} className='card'>
+              <div key={index + download_url} className='card'>
                 <div className='card-body '>
                   <img
                     alt={author}

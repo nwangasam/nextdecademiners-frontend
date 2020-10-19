@@ -143,7 +143,7 @@ const Sidebar = (props) => {
         ]}
         <Divider style={{ margin: "16px auto" }} w="80%" />
         {crypto.map((c, i) => (
-          <Link key={c.text} to="/">
+          <Link key={c.text + i} to="/">
             <Flex
               cursor="pointer"
               as="li"

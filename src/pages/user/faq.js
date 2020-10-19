@@ -43,7 +43,7 @@ const FAQ = (props) => (
     <Heading textAlign='center' my={6}>FAQ</Heading>
     <Box>
       {questions.map((qst, i) => (
-        <Accordion allowToggle key={i}>
+        <Accordion allowToggle key={i + Math.random()}>
           <AccordionItem>
             <AccordionHeader>
               <Box flex="1" textAlign="left" fontWeight="semibold" fontSize='lg'>
