@@ -114,7 +114,7 @@ const Admin = (props) => {
         return;
       }
     },
-    [route, token]
+    [props.token]
   );
 
   function setPagination(type, prev, next, total) {
