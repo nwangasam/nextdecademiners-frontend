@@ -59,8 +59,8 @@ const Admin = (props) => {
   });
   const [limit, setLimit] = useState({
     users: 8,
-    deposits: 10,
-    withdrawals: 7,
+    deposits: 25,
+    withdrawals: 25,
   });
 
   const [next, setNext] = useState({
@@ -102,8 +102,8 @@ const Admin = (props) => {
 
         setLimit({
           users: 8,
-          deposits: 10,
-          withdrawals: 7,
+          deposits: 25,
+          withdrawals: 25,
         });
         setPageError(false);
         setLoadingPage(false);
