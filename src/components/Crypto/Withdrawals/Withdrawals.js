@@ -7,7 +7,7 @@ import useFetchUserData from '../../../hooks/useFetchUserData';
 
 const Withdrawals = React.forwardRef((props, ref) => {
   const {
-    data: { withdrawals, totalWithdrawals },
+    data: { withdrawals },
     error,
     loading,
   } = useFetchUserData(`/withdrawals`, props.token);
