@@ -12,9 +12,6 @@ const Deposits = React.forwardRef((props, ref) => {
       loading,
     } = useFetchUserData(`/deposits`, props.token);
   
-    console.log('DEPOSITS LIST IS RENDERING...');
-    console.log('MY DEPOSITS', deposits)
-  
     return (
       <TabPanel className='data-list' ref={ref} {...props}> 
       <Skeleton isLoaded>

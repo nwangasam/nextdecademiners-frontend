@@ -5,8 +5,6 @@ import { TabPanel, Skeleton } from '@chakra-ui/core';
 // custom hooks
 import useFetchUserData from '../../../hooks/useFetchUserData';
 
-let withdrawalTotal = () => 0;
-
 const Withdrawals = React.forwardRef((props, ref) => {
   const {
     data: { withdrawals, totalWithdrawals },
@@ -14,12 +12,6 @@ const Withdrawals = React.forwardRef((props, ref) => {
     loading,
   } = useFetchUserData(`/withdrawals`, props.token);
 
-  withdrawalTotal = () => {
-    return totalWithdrawals ? totalWithdrawals : '...'
-  }
-
-  console.log('WITHDRAWAL LIST IS RENDERING...');
-  console.log('MY WITHDRAWALS', withdrawals)
 
   return (
     <TabPanel className='data-list' ref={ref} {...props}>
@@ -40,7 +32,5 @@ const Withdrawals = React.forwardRef((props, ref) => {
     </TabPanel>
   );
 })
-
-export { withdrawalTotal }
 
 export default Withdrawals;
