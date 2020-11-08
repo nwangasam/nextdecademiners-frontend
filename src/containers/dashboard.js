@@ -19,9 +19,11 @@ const Account = lazy(() => import('../components/Account/Account'));
 const Admin = lazy(() => import('../components/Admin/Admin'));
 
 const Dashboard = (props) => {
-  const { data: { user }, loading, error } = useFetchUserData(
-    `/profile`, props.token
-  );
+  const {
+    data: { user },
+    loading,
+    error,
+  } = useFetchUserData(`/profile`, props.token);
 
   const renderTotalBalance = (currency) => {
     if (!user) return;
@@ -37,10 +39,12 @@ const Dashboard = (props) => {
     }).format(Number(total));
   };
 
-
   return (
     <Grid
-      templateColumns={{ base: '1fr', md: 'minmax(150px, 20%) 1fr minmax(480px, 1fr)' }}
+      templateColumns={{
+        base: '1fr',
+        md: 'minmax(150px, 20%) 1fr minmax(480px, 1fr)',
+      }}
       templateRows={{ base: '8rem auto auto', md: 'auto auto auto' }}
       gap={4}
       rowGap={{ base: '1rem', md: '2rem' }}
@@ -51,7 +55,7 @@ const Dashboard = (props) => {
         userError={error}
         totalBalance={renderTotalBalance}
       />
-      <Sidebar user={user} totalBalance={renderTotalBalance}  />
+      <Sidebar user={user} totalBalance={renderTotalBalance} />
 
       <Flex direction='column' as='section' p='0 1rem'>
         <Suspense
@@ -121,7 +125,7 @@ const Dashboard = (props) => {
           </Switch>
         </Suspense>
       </Flex>
-      <Chart />
+      <Route path='/' exact component={Chart} />
     </Grid>
   );
 };
