@@ -4,16 +4,16 @@ import { IconButton } from "@chakra-ui/core";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 
-const MobileToggle = (props) => {
+const MobileToggle = ({ onToggle, isOpen }) => {
   return (
     <IconButton
       style={{ background: "transparent" }}
       display={{ lg: "none" }}
-      onClick={props.toggleSidebar}
+      onClick={onToggle}
       color="white"
       aria-label="Toggle mobile navigation"
       fontSize="24px"
-      icon={!props.isOpen ? GiHamburgerMenu : MdClose}
+      icon={!isOpen ? GiHamburgerMenu : MdClose}
     />
   );
 };

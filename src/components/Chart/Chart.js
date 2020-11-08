@@ -41,7 +41,7 @@ const Chart = () => {
   };
 
   return (
-    <Box gridColumn={{ lg: "3 / 4" }} mt={{ base: 8, lg: 0 }} mx={{ base: 0, lg: 4}}>
+    <Box mt={{ base: 8, lg: 0 }} mx={{ base: 0, lg: 4}}>
       <Menu my={4}>
         <MenuButton as={Button} style={{ backgroundColor: 'transparent', border: '1px solid #EEE' }}>
           <Heading
@@ -108,4 +108,4 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+export default React.memo(Chart);

@@ -16,7 +16,7 @@ const Account = ({ user, logoutHandler }) => {
         size="sm"
         onClick={logoutHandler}
         variant="outline"
-        variantColor="red.400"
+        variantColor="red"
         color="red.400"
       >
         Sign Out

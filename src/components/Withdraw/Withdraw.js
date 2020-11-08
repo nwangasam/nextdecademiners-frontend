@@ -199,6 +199,7 @@ const Withdraw = (props) => {
         <Scale in={isOpen}>
           {(styles) => (
             <AlertDialog
+            isCentered
               leastDestructiveRef={cancelRef}
               finalFocusRef={btnRef}
               onClose={onClose}
