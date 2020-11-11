@@ -393,7 +393,7 @@ const LandingPage = () => {
               <Box borderRight={{ lg: '1px solid #eee' }} pr={{ lg: 5 }}>
                 <Text fontSize={'18px'} lineHeight={'32px'}>
                   Nextdecademiners.com is United Kingdom registered company,
-                  (Company Number: 06416732, Enterprise House, 2 Pass Street,
+                  (Company Number: 11971174, Enterprise House, 2 Pass Street,
                   Oldham, Manchester, United Kingdom, OL9 6HZ.). We are a 24/7
                   crypto-currency trading platform that works automatically, and
                   it has been registered in the UK company, we offer a
@@ -417,7 +417,7 @@ const LandingPage = () => {
                   COMPANY NUMBER - UK
                 </Heading>
                 <Text fontSize={'40px'} fontWeight={'500'}>
-                  06416732
+                11971174
                 </Text>
               </Box>
             </Grid>
