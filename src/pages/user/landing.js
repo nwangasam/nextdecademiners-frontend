@@ -435,7 +435,7 @@ const LandingPage = () => {
                 mb={{ base: '4rem' }}
                 textAlign={'center'}
                 fontSize='calc(2rem + 1vw)'
-                color='#000'
+                color='#000000'
                 textTransform={'uppercase'}
               >
                 Why Choose Us?
