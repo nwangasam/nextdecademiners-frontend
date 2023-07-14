@@ -17,7 +17,7 @@ const useFetchAdminData = (route, token) => {
 
         if (route) {
           const request = await axios(
-            `https://nextdecademiners.herokuapp.com/admin${route}?page=${pageNumber}&limit=10`,
+            `https://nextdecademiners-backend.vercel.app/admin${route}?page=${pageNumber}&limit=10`,
             {
               method: 'GET',
               headers: {
@@ -51,7 +51,7 @@ const useFetchAdminData = (route, token) => {
     (user) => {
       if (!user || user.isAdmin) return;
       setLoading(true);
-      fetch(`https://nextdecademiners.herokuapp.com/admin/user/${user._id}`, {
+      fetch(`https://nextdecademiners-backend.vercel.app/admin/user/${user._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

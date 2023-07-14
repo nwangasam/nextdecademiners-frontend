@@ -54,7 +54,7 @@ class App extends React.Component {
     this.setState({ authLoading: true });
     try {
       const response = await fetch(
-        'https://nextdecademiners.herokuapp.com/auth/login',
+        'https://nextdecademiners-backend.vercel.app/auth/login',
         {
           method: 'POST',
           headers: {
@@ -104,7 +104,7 @@ class App extends React.Component {
     this.setState({ authLoading: true });
     try {
       const res = await fetch(
-        'https://nextdecademiners.herokuapp.com/auth/signup',
+        'https://nextdecademiners-backend.vercel.app/auth/signup',
         {
           method: 'PUT',
           headers: {

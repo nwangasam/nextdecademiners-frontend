@@ -78,7 +78,7 @@ const Deposit = (props) => {
     onClose();
     if (!props.user._id) return;
     setLoading(true);
-    fetch("https://nextdecademiners.herokuapp.com/user/deposit", {
+    fetch("https://nextdecademiners-backend.vercel.app/user/deposit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -13,7 +13,7 @@ const useFetchUserData = (route, token) => {
         setLoading(true);
 
         const request = await axios(
-          `https://nextdecademiners.herokuapp.com/user${route}?page=1&limit=50`,
+          `https://nextdecademiners-backend.vercel.app/user${route}?page=1&limit=50`,
           {
             method: 'GET',
             headers: {

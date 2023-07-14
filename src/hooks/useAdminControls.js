@@ -26,7 +26,7 @@ const useAdminControls = (token) => {
           data = deposit;
           break;
       }
-      let url = `https://nextdecademiners.herokuapp.com/admin/deposit${route}`;
+      let url = `https://nextdecademiners-backend.vercel.app/admin/deposit${route}`;
       const requestOption = {
         method,
         headers: {
@@ -55,7 +55,7 @@ const useAdminControls = (token) => {
   const acceptDepositRequest = useCallback(
     async (withdrawal) => {
       if (!withdrawal._id || loading) return;
-      let url = `https://nextdecademiners.herokuapp.com/admin/withdraw`;
+      let url = `https://nextdecademiners-backend.vercel.app/admin/withdraw`;
 
       setLoading(true);
       setError(false);
