@@ -68,7 +68,7 @@ const Withdraw = (props) => {
     onClose();
     if (!props.user._id) return;
     setLoading(true);
-    fetch("https://nextdecademiners-backend.vercel.app/user/withdraw", {
+    fetch(`${process.env.REACT_APP_API_URL}/user/withdraw`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

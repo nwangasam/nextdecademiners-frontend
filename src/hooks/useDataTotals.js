@@ -18,7 +18,7 @@ const useDatatotals = (token) => {
       },
     };
 
-    Promise.all(urls.map((url) => fetch(`https://nextdecademiners-backend.vercel.app/admin${url}`, option)))
+    Promise.all(urls.map((url) => fetch(`${process.env.REACT_APP_API_URL}/admin${url}`, option)))
       .then((response) => {
         return Promise.all(response.map((res) => res.json()));
       })

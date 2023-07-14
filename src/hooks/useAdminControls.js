@@ -26,7 +26,7 @@ const useAdminControls = (token) => {
           data = deposit;
           break;
       }
-      let url = `https://nextdecademiners-backend.vercel.app/admin/deposit${route}`;
+      let url = `${process.env.REACT_APP_API_URL}/admin/deposit${route}`;
       const requestOption = {
         method,
         headers: {
@@ -55,7 +55,7 @@ const useAdminControls = (token) => {
   const acceptDepositRequest = useCallback(
     async (withdrawal) => {
       if (!withdrawal._id || loading) return;
-      let url = `https://nextdecademiners-backend.vercel.app/admin/withdraw`;
+      let url = `${process.env.REACT_APP_API_URL}/admin/withdraw`;
 
       setLoading(true);
       setError(false);

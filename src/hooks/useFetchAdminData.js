@@ -17,7 +17,7 @@ const useFetchAdminData = (route, token) => {
 
         if (route) {
           const request = await axios(
-            `https://nextdecademiners-backend.vercel.app/admin${route}?page=${pageNumber}&limit=10`,
+            `${process.env.REACT_APP_API_URL}/admin${route}?page=${pageNumber}&limit=10`,
             {
               method: 'GET',
               headers: {
@@ -51,7 +51,7 @@ const useFetchAdminData = (route, token) => {
     (user) => {
       if (!user || user.isAdmin) return;
       setLoading(true);
-      fetch(`https://nextdecademiners-backend.vercel.app/admin/user/${user._id}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/admin/user/${user._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

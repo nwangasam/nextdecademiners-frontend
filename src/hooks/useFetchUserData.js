@@ -13,7 +13,7 @@ const useFetchUserData = (route, token) => {
         setLoading(true);
 
         const request = await axios(
-          `https://nextdecademiners-backend.vercel.app/user${route}?page=1&limit=50`,
+          `${process.env.REACT_APP_API_URL}/user${route}?page=1&limit=50`,
           {
             method: 'GET',
             headers: {
