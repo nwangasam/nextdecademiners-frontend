@@ -17,7 +17,7 @@ const useUserDataTotals = (token) => {
       },
     };
 
-    Promise.all(urls.map((url) => fetch(`${process.env.REACT_APP_API_URL}/user${url}`, option)))
+    Promise.all(urls.map((url) => fetch(`${process.env.REACT_APP_API_URL}/api/user${url}`, option)))
       .then((response) => {
         return Promise.all(response.map((res) => res.json()));
       })

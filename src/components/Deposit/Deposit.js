@@ -78,7 +78,7 @@ const Deposit = (props) => {
     onClose();
     if (!props.user._id) return;
     setLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL}/user/deposit`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/deposit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

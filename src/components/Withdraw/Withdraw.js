@@ -68,7 +68,7 @@ const Withdraw = (props) => {
     onClose();
     if (!props.user._id) return;
     setLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL}/user/withdraw`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/withdraw`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

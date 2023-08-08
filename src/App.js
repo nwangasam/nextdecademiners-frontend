@@ -54,7 +54,7 @@ class App extends React.Component {
     this.setState({ authLoading: true });
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
         {
           method: 'POST',
           headers: {
@@ -104,7 +104,7 @@ class App extends React.Component {
     this.setState({ authLoading: true });
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/signup`,
+        `${process.env.REACT_APP_API_URL}/api/auth/signup`,
         {
           method: 'PUT',
           headers: {

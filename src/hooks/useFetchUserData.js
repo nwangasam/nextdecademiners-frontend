@@ -13,7 +13,7 @@ const useFetchUserData = (route, token) => {
         setLoading(true);
 
         const request = await axios(
-          `${process.env.REACT_APP_API_URL}/user${route}?page=1&limit=50`,
+          `${process.env.REACT_APP_API_URL}/api/user${route}?page=1&limit=50`,
           {
             method: 'GET',
             headers: {
