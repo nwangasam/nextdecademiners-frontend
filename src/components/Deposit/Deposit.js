@@ -31,7 +31,8 @@ const crypto = {
   bitcoin: {
     label: "Bitcoin (BTC)",
     color: "orange",
-    address: "1BuFZ5pJMoZfibcTeuEMPwvp5GbG4gu6pq",
+    // address: "1BuFZ5pJMoZfibcTeuEMPwvp5GbG4gu6pq",
+    address: "1PV3JopimpWk4S2DHBjWdfNbVXyhqTk9Bb",
     walletAccount: "My Bitcoin Wallet",
     symb: "BTC",
     icon: FaBitcoin,
@@ -39,7 +40,8 @@ const crypto = {
   ethereum: {
     label: "Ethereum (ETH)",
     color: "gray",
-    address: "0x1a6f6a40c259d4408970a1fdea40f5f1c11b72a6",
+    // address: "0x1a6f6a40c259d4408970a1fdea40f5f1c11b72a6",
+    address: "0x2F67e3928544099543cF0948b00186B7268B7278",
     walletAccount: "My Ethereum Wallet",
     symb: "ETH",
     icon: FaEthereum,
