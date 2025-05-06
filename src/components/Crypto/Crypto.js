@@ -57,6 +57,7 @@ const Crypto = ({ user, totalBal, token }) => {
           {user && totalBal()}
         </Text>
       </Flex>
+
       <Tabs variant='enclosed' mt={{ lg: 5 }} minH='300px' size='lg'>
         <TabList mb='1em'>
           {stats.map((stat, i) => {
@@ -73,6 +74,7 @@ const Crypto = ({ user, totalBal, token }) => {
             );
           })}
         </TabList>
+        
         <TabPanels as='ul'>
           <Total user={user} />
           <Deposits token={token} />
