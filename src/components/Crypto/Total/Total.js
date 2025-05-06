@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { ReactComponent as BitcoinCashIcon } from "../../../assets/images/bitcoin-cash.svg";
 
-import { TabPanel, Flex, Box, Heading, Text, Divider } from "@chakra-ui/core";
+import { TabPanel, Flex, Box, Heading, Text, Divider, Badge } from "@chakra-ui/core";
 
 const cryptos = [
   {
@@ -50,6 +50,16 @@ const Total = React.forwardRef((props, ref) => {
             </Heading>
 
             <Flex direction="column" align="flex-end" ml="auto">
+                {props?.user?.isAdminDeposit &&
+                  Number(props.user.balance[crypto.id]) > 0 && (
+                    <Text fontSize="14px" color="#449e75" fontWeight="500">
+                      <Badge variantColor={"green"}>
+                        Admin initiated deposit
+                      </Badge>
+                    </Text>
+                  )}
+
+                  
               <Text fontSize="18px" fontWeight="500" color="rgb(53, 63, 82)">
                 {props.user &&
                   new Intl.NumberFormat("en-US", {
@@ -61,12 +71,6 @@ const Total = React.forwardRef((props, ref) => {
                 {`${crypto.symbol}`}
               </Text>
 
-              {props?.user?.isAdminDeposit &&
-                Number(props.user.balance[crypto.id]) > 0 && (
-                  <Text fontSize="14px" color="green" fontWeight="500">
-                    Admin initiated deposit
-                  </Text>
-                )}
             </Flex>
           </Flex>
           <Divider w="100%" mx="auto" />
