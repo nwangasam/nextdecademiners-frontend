@@ -5,7 +5,7 @@ const useFetchUserData = (route, token) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+  // some minor changes
   useEffect(() => {
     (async () => {
       try {
