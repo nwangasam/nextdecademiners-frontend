@@ -1,6 +1,14 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, useEffect, memo } from 'react';
+import { FiSearch } from 'react-icons/fi';
 import {
   TabPanel,
+  Box,
+  Text,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  IconButton,
   Skeleton,
   useDisclosure,
   Modal,
@@ -20,14 +28,22 @@ import useFetchAdminData from '../../../hooks/useFetchAdminData';
 const Users = React.forwardRef((props, ref) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delUser, setDelUser] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
+  const [search, setSearch] = useState('');
+
+  // Wait until typing pauses before asking the server
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput.trim()), 350);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const {
-    data: { users },
+    data: { users, totalUsers },
     loading,
     error,
     deleteUser,
     observedElement,
-  } = useFetchAdminData('/users', props.token);
+  } = useFetchAdminData('/users', props.token, search);
 
   const handleDeletingUser = useCallback(
     (e, user) => {
@@ -48,6 +64,37 @@ const Users = React.forwardRef((props, ref) => {
 
   return (
     <TabPanel ref={ref} {...props} overflow='hidden'>
+      <Box pt='4'>
+        <InputGroup>
+          <InputLeftElement children={<Box as={FiSearch} color='gray.400' />} />
+          <Input
+            type='text'
+            autoComplete='off'
+            aria-label='Search users'
+            placeholder='Search by name, email, referral or user ID'
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          {searchInput && (
+            <InputRightElement>
+              <IconButton
+                size='sm'
+                variant='ghost'
+                icon='close'
+                aria-label='Clear search'
+                onClick={() => setSearchInput('')}
+              />
+            </InputRightElement>
+          )}
+        </InputGroup>
+        {search && !loading && typeof totalUsers === 'number' && (
+          <Text fontSize='sm' color='gray.500' mt='2'>
+            {totalUsers === 0
+              ? `No users match "${search}"`
+              : `${totalUsers} ${totalUsers === 1 ? 'user matches' : 'users match'} "${search}"`}
+          </Text>
+        )}
+      </Box>
       <Skeleton isLoaded>
         {users &&
           users.map((user, i) => (
