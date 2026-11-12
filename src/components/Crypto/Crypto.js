@@ -14,6 +14,7 @@ import {
 import Deposits from "./Deposits/Deposits";
 import Withdrawals from "./Withdrawals/Withdrawals";
 import Total from "./Total/Total";
+import AccountCard from "./AccountCard/AccountCard";
 
 import useUserDataTotals from "../../hooks/useUserDataTotals";
 
@@ -58,8 +59,6 @@ const Crypto = ({ user, totalBal, token }) => {
         </Text>
       </Flex>
 
-      {/* <Box position="absolute" >hello world</Box> */}
-
       <Tabs variant="enclosed" mt={{ lg: 5 }} minH="300px" size="lg">
         <TabList mb="1em">
           {stats.map((stat, i) => {
@@ -83,6 +82,8 @@ const Crypto = ({ user, totalBal, token }) => {
           <Withdrawals token={token} />
         </TabPanels>
       </Tabs>
+
+      <AccountCard user={user} />
 
       {user?.idUrl && (
         <div
