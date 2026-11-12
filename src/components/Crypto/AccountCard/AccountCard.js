@@ -1,7 +1,8 @@
 import React, { memo } from "react";
-import { Box, Flex, Avatar, Text, Badge, Icon } from "@chakra-ui/core";
+import moment from "moment";
+import { Box, Flex, Text, Badge, Icon } from "@chakra-ui/core";
 
-// Account details shown at the top of the dashboard for upgraded accounts
+// Account details shown below the assets on the dashboard for upgraded accounts
 const Row = ({ label, value }) => (
   <Flex
     justify="space-between"
@@ -53,21 +54,10 @@ const AccountCard = ({ user }) => {
         bgImage="linear-gradient(90deg, #449e75, #3182ce)"
       />
 
-      <Flex align="center" mb={3} flexWrap="wrap">
-        <Avatar name={user.name} size="md" bg="blue.500" color="white" />
-        <Box ml={3} flex="1" minW="0">
-          <Text
-            fontSize="18px"
-            fontWeight="600"
-            color="rgb(53, 63, 82)"
-            isTruncated
-          >
-            {user.name}
-          </Text>
-          <Text fontSize="13px" color="rgb(152, 161, 178)" isTruncated>
-            {user.email}
-          </Text>
-        </Box>
+      <Flex align="center" justify="space-between" mb={3} flexWrap="wrap">
+        <Text fontSize="16px" fontWeight="600" color="rgb(53, 63, 82)">
+          Account details
+        </Text>
         <Badge
           variantColor="green"
           fontSize="12px"
@@ -76,17 +66,19 @@ const AccountCard = ({ user }) => {
           borderRadius="full"
           d="flex"
           alignItems="center"
-          mt={{ base: 3, sm: 0 }}
         >
           <Icon name="check-circle" size="12px" mr={1} />
           Account upgraded
         </Badge>
       </Flex>
 
-      <Row label="Full name" value={user.name} />
+      <Row label="Name" value={user.name} />
       <Row label="Email" value={user.email} />
       <Row label="Referral" value={user.referalEmail || "None"} />
-      <Row label="Account level" value={`${user.upgradedTo} (upgraded)`} />
+      <Row
+        label="Date joined"
+        value={user.createdAt ? moment(user.createdAt).format("D MMM YYYY") : "—"}
+      />
     </Box>
   );
 };
