@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import axios from 'axios';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Dashboard from './containers/dashboard';
 import { Grid, Spinner } from '@chakra-ui/core';
@@ -10,6 +11,15 @@ const Login = lazy(() => import('./pages/auth/Login'));
 
 const LandingPage = lazy(() => import('./pages/user/landing'));
 
+// Sent by the API when an account has been deactivated by an admin
+const DEACTIVATED_CODE = 'ACCOUNT_DEACTIVATED';
+const STATUS_CHECK_MS = 60 * 1000;
+
+const deactivationMessage = (status, body) =>
+  status === 403 && body && body.data && body.data.code === DEACTIVATED_CODE
+    ? body.message
+    : null;
+
 class App extends React.Component {
   state = {
     isAuth: false,
@@ -20,6 +30,17 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    // Any API call that finds the account deactivated signs the user out
+    this.deactivationInterceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        const res = error && error.response;
+        const message = res && deactivationMessage(res.status, res.data);
+        if (message && this.state.isAuth) this.logoutHandler(message);
+        return Promise.reject(error);
+      }
+    );
+
     const token = localStorage.getItem('token');
     const expiryDate = localStorage.getItem('expiryDate');
     if (!token || !expiryDate) return;
@@ -32,15 +53,52 @@ class App extends React.Component {
       new Date(expiryDate).getTime() - new Date().getTime();
     this.setState({ isAuth: true, token: token, userId: userId });
     this.setAutologout(remainingMilliseconds);
+    this.startStatusCheck(token);
   }
 
-  logoutHandler = () => {
-    this.setState({ isAuth: false, token: null });
+  componentWillUnmount() {
+    axios.interceptors.response.eject(this.deactivationInterceptor);
+    this.stopStatusCheck();
+  }
+
+  // Ask the API every minute whether this session is still allowed, so a
+  // deactivated account is signed out even if the page is left open
+  startStatusCheck = (token) => {
+    this.stopStatusCheck();
+    const check = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/auth/status`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (res.status !== 403) return;
+        const body = await res.json();
+        const message = deactivationMessage(res.status, body);
+        if (message) this.logoutHandler(message);
+      } catch (err) {
+        // offline or API unreachable: try again on the next tick
+      }
+    };
+    check();
+    this.statusTimer = setInterval(check, STATUS_CHECK_MS);
+  };
+
+  stopStatusCheck = () => {
+    if (this.statusTimer) clearInterval(this.statusTimer);
+    this.statusTimer = null;
+  };
+
+  // `message` is set when the API ended the session (e.g. a deactivated
+  // account); it is shown on the login page
+  logoutHandler = (message) => {
+    const reason = typeof message === 'string' ? message : null;
+    this.stopStatusCheck();
+    this.setState({ isAuth: false, token: null, error: reason });
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
     console.log('You just logged out');
-    this.props.history.replace('/')
+    this.props.history.replace(reason ? '/auth/login' : '/');
   };
 
   setAutologout = (milliseconds) => {
@@ -89,6 +147,7 @@ class App extends React.Component {
       const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
       localStorage.setItem('expiryDate', expiryDate.toISOString());
       this.setAutologout(remainingMilliseconds);
+      this.startStatusCheck(token);
     } catch (err) {
       console.log(err);
       this.setState({
